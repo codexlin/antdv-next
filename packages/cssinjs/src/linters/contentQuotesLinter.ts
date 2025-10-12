@@ -4,8 +4,7 @@ import { lintWarning } from './utils'
 const linter: Linter = (key, value, info) => {
   if (key === 'content') {
     // From emotion: https://github.com/emotion-js/emotion/blob/main/packages/serialize/src/index.js#L63
-    const contentValuePattern
-      = /(attr|counters?|url|(((repeating-)?(linear|radial))|conic)-gradient)\(|(no-)?(open|close)-quote/
+    const contentValuePattern = /(attr|counters?|url|(((repeating-)?(linear|radial))|conic)-gradient)\(|(no-)?(open|close)-quote/
     const contentValues = ['normal', 'none', 'initial', 'inherit', 'unset']
     if (
       typeof value !== 'string'

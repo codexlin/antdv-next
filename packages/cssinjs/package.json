@@ -11,9 +11,9 @@
       "default": "./dist/index.js"
     },
     "./cssinjs-utils": {
-      "types": "./dist/cssinjs-utils.d.ts",
-      "import": "./dist/cssinjs-utils.js",
-      "default": "./dist/cssinjs-utils.js"
+      "types": "./dist/cssinjs-utils/index.d.ts",
+      "import": "./dist/cssinjs-utils/index.js",
+      "default": "./dist/cssinjs-utils/index.js"
     }
   },
   "scripts": {

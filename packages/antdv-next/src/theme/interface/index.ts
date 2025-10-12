@@ -1,6 +1,19 @@
-export type { AliasToken } from './alias'
+import type { CSSInterpolation, DerivativeFunc } from '@antdv-next/cssinjs'
+import type { VNodeChild } from 'vue'
+import type { AnyObject } from '../../_util/type.ts'
+
+import type { AliasToken } from './alias'
+
 export type { ComponentTokenMap } from './components'
-export type { CalcFactory, CalcUtil, CSSUtil, TokenWithCommonCls } from './cssUtil'
+export type {
+  FullToken,
+  GenStyleFn,
+  GetDefaultToken,
+  GlobalToken,
+  OverrideComponent,
+  OverrideToken,
+} from './cssinjs-utils'
+
 export type {
   ColorMapToken,
   ColorNeutralMapToken,
@@ -22,10 +35,16 @@ export type {
 export type { SeedToken } from './seeds'
 
 export type TokenType = object
-export type DerivativeFunc<
-  DesignToken extends TokenType,
-  DerivativeToken extends TokenType,
-> = (
-  designToken: DesignToken,
-  derivativeToken?: DerivativeToken,
-) => DerivativeToken
+
+export type GenerateStyle<
+  ComponentToken extends AnyObject = AliasToken,
+  ReturnType = CSSInterpolation,
+> = (token: ComponentToken) => ReturnType
+
+export type UseComponentStyleResult = [(node: VNodeChild) => VNodeChild, string]
+
+export type {
+  AliasToken,
+  CSSInterpolation,
+  DerivativeFunc,
+}

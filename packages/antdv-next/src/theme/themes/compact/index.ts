@@ -1,4 +1,5 @@
-import type { DerivativeFunc, MapToken, SeedToken } from '../../interface'
+import type { DerivativeFunc } from '@antdv-next/cssinjs'
+import type { MapToken, SeedToken } from '../../interface'
 import defaultAlgorithm from '../default'
 import genControlHeight from '../shared/genControlHeight'
 import genFontMapToken from '../shared/genFontMapToken'

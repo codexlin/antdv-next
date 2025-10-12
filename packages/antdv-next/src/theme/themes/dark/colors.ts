@@ -1,4 +1,4 @@
-import type { GenerateColorMap, GenerateNeutralColorMap } from '../ColorMap'
+import type { ColorMap, GenerateColorMap, GenerateNeutralColorMap } from '../ColorMap'
 
 import { generate } from '@ant-design/colors'
 import { getAlphaColor, getSolidColor } from './colorAlgorithm'
@@ -19,7 +19,7 @@ export const generateColorPalettes: GenerateColorMap = (baseColor: string) => {
     // 8: colors[9],
     // 9: colors[8],
     // 10: colors[7],
-  }
+  } as ColorMap
 }
 
 export const generateNeutralColorPalettes: GenerateNeutralColorMap = (

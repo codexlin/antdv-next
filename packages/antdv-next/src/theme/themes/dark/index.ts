@@ -1,4 +1,5 @@
-import type { DerivativeFunc, MapToken, PresetColorType, SeedToken } from '../../interface'
+import type { DerivativeFunc } from '@antdv-next/cssinjs'
+import type { MapToken, PresetColorType, SeedToken } from '../../interface'
 
 import { generate } from '@ant-design/colors'
 import defaultAlgorithm from '../default'
@@ -10,7 +11,7 @@ const derivative: DerivativeFunc<SeedToken, MapToken> = (token, mapToken) => {
   const colorPalettes = Object.keys(defaultPresetColors)
     .map((colorKey) => {
       const colors = generate(token[colorKey as keyof PresetColorType], { theme: 'dark' })
-      return Array.from({ length: 10 }, () => 1).reduce<Record<string, string>>((prev, _, i) => {
+      return Array.from({ length: 10 }, () => 1).reduce<Record<string, any>>((prev, _, i) => {
         prev[`${colorKey}-${i + 1}`] = colors[i]
         prev[`${colorKey}${i + 1}`] = colors[i]
         return prev
