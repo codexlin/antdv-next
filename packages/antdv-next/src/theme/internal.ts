@@ -1,7 +1,7 @@
 import type {
   AliasToken,
   FullToken,
-  // GenerateStyle,
+  GenerateStyle,
   GenStyleFn,
   GetDefaultToken,
   GlobalToken,
@@ -9,7 +9,7 @@ import type {
   PresetColorKey,
   PresetColorType,
   SeedToken,
-  // UseComponentStyleResult,
+  UseComponentStyleResult,
 } from './interface'
 import { genCalc as calc, useStyleRegister } from '@antdv-next/cssinjs'
 
@@ -46,7 +46,7 @@ export {
 export type {
   AliasToken,
   FullToken,
-  // GenerateStyle,
+  GenerateStyle,
   GenStyleFn,
   GetDefaultToken,
   GlobalToken,
@@ -54,5 +54,5 @@ export type {
   PresetColorKey,
   PresetColorType,
   SeedToken,
-  // UseComponentStyleResult,
+  UseComponentStyleResult,
 }

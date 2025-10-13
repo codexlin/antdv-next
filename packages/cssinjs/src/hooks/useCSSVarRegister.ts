@@ -21,7 +21,7 @@ export type CSSVarCacheValue<
   cssVarKey: string,
 ]
 
-export interface CSSVarRegisterConfig<V, T extends Record<string, V>> {
+export interface CSSVarRegisterConfig {
   path: string[]
   key: string
   prefix?: string
@@ -35,7 +35,7 @@ export interface CSSVarRegisterConfig<V, T extends Record<string, V>> {
 export default function useCSSVarRegister<
   V,
   T extends Record<string, V>,
->(config: Ref<CSSVarRegisterConfig<V, T>>, fn: () => T) {
+>(config: Ref<CSSVarRegisterConfig>, fn: () => T) {
   const styleContext = useStyleContext()
 
   const stylePath = computed<(string | number)[]>(() => {

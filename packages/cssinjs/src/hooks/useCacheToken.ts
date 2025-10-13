@@ -1,15 +1,11 @@
+import type { Ref } from 'vue'
 import type Theme from '../theme/Theme'
 import type { ExtractStyle } from './useGlobalCache'
 import hash from '@emotion/hash'
 import { updateCSS } from '@v-c/util/dist/Dom/dynamicCSS'
-import { computed, unref } from 'vue'
+import { computed, ref } from 'vue'
 import { ATTR_MARK, ATTR_TOKEN, CSS_IN_JS_INSTANCE, useStyleContext } from '../StyleContext'
-import {
-  flattenToken,
-  memoResult,
-  token2key,
-  toStyleStr,
-} from '../util'
+import { flattenToken, memoResult, token2key, toStyleStr } from '../util'
 import { transformToken } from '../util/css-variables'
 import { useGlobalCache } from './useGlobalCache'
 
@@ -107,19 +103,19 @@ export default function useCacheToken<
   DerivativeToken = Record<string, any>,
   DesignToken = DerivativeToken,
 >(
-  theme: Theme<any, any>,
-  tokens: (Partial<DesignToken> | (() => Partial<DesignToken>))[],
-  option: Option<DerivativeToken, DesignToken> = {},
+  theme: Ref<Theme<any, any>>,
+  tokens: Ref<(Partial<DesignToken> | (() => Partial<DesignToken>))[]>,
+  option: Ref<Option<DerivativeToken, DesignToken>> = ref({}),
 ) {
   const styleContext = useStyleContext()
 
-  const salt = option.salt ?? ''
-  const override = option.override ? unref(option.override) : EMPTY_OVERRIDE
-  const formatToken = option.formatToken
-  const compute = option.getComputedToken
-  const cssVar = option.cssVar ? unref(option.cssVar) : undefined
+  const salt = computed(() => option.value.salt ?? '')
+  const override = computed(() => option.value.override ? option.value.override : EMPTY_OVERRIDE)
+  const formatToken = computed(() => option.value.formatToken)
+  const compute = computed(() => option.value.getComputedToken)
+  const cssVar = computed(() => option.value.cssVar ? option.value.cssVar : undefined)
 
-  const resolvedTokens = computed(() => tokens.map(token => (typeof token === 'function' ? token() : unref(token))))
+  const resolvedTokens = computed(() => tokens.value.map(token => (typeof token === 'function' ? token() : token)))
 
   const mergedToken = computed(() => memoResult(
     () => Object.assign({}, ...resolvedTokens.value),
@@ -127,38 +123,38 @@ export default function useCacheToken<
   ))
 
   const tokenStr = computed(() => flattenToken(mergedToken.value))
-  const overrideTokenStr = computed(() => flattenToken(override))
-  const cssVarStr = computed(() => (cssVar ? flattenToken(cssVar) : ''))
+  const overrideTokenStr = computed(() => flattenToken(override.value))
+  const cssVarStr = computed(() => (cssVar.value ? flattenToken(cssVar.value) : ''))
 
-  const cacheValue = useGlobalCache<TokenCacheValue<DerivativeToken>>(
+  return useGlobalCache<TokenCacheValue<DerivativeToken>>(
     computed(() => TOKEN_PREFIX),
-    computed(() => [salt, theme.id, tokenStr.value, overrideTokenStr.value, cssVarStr.value]),
+    computed(() => [salt.value, theme.value.id, tokenStr.value, overrideTokenStr.value, cssVarStr.value]),
     () => {
-      let mergedDerivativeToken = compute
-        ? compute(mergedToken.value as DesignToken, override, theme)
-        : getComputedToken(mergedToken.value as DesignToken, override, theme, formatToken)
+      let mergedDerivativeToken = compute.value
+        ? compute.value(mergedToken.value as DesignToken, override.value, theme.value)
+        : getComputedToken(mergedToken.value as DesignToken, override.value, theme.value, formatToken.value)
 
       const actualToken = { ...mergedDerivativeToken }
       let cssVarsStr = ''
 
-      if (cssVar) {
+      if (cssVar.value) {
         [mergedDerivativeToken, cssVarsStr] = transformToken(
           mergedDerivativeToken,
-          cssVar.key!,
+          cssVar.value.key!,
           {
-            prefix: cssVar.prefix,
-            ignore: cssVar.ignore,
-            unitless: cssVar.unitless,
-            preserve: cssVar.preserve,
+            prefix: cssVar.value.prefix,
+            ignore: cssVar.value.ignore,
+            unitless: cssVar.value.unitless,
+            preserve: cssVar.value.preserve,
           },
         )
       }
 
-      const tokenKey = token2key(mergedDerivativeToken, salt)
+      const tokenKey = token2key(mergedDerivativeToken, salt.value)
       ;(mergedDerivativeToken as any)._tokenKey = tokenKey
-      ;(actualToken as any)._tokenKey = token2key(actualToken, salt)
+      ;(actualToken as any)._tokenKey = token2key(actualToken, salt.value)
 
-      const themeKey = cssVar?.key ?? tokenKey
+      const themeKey = cssVar.value?.key ?? tokenKey
       ;(mergedDerivativeToken as any)._themeKey = themeKey
       recordCleanToken(themeKey)
 
@@ -170,14 +166,14 @@ export default function useCacheToken<
         hashId,
         actualToken as TokenCacheValue<DerivativeToken>[2],
         cssVarsStr,
-        cssVar?.key || '',
+        cssVar.value?.key || '',
       ]
     },
     (cache) => {
       cleanTokenStyle(cache[0]._themeKey, styleContext.value.cache.instanceId)
     },
     ([token, , , cssVarsStr]) => {
-      if (cssVar && cssVarsStr) {
+      if (cssVar.value && cssVarsStr) {
         const style = updateCSS(
           cssVarsStr,
           hash(`css-variables-${token._themeKey}`),
@@ -194,8 +190,6 @@ export default function useCacheToken<
       }
     },
   )
-
-  return cacheValue
 }
 
 export const extract: ExtractStyle<TokenCacheValue<any>> = (

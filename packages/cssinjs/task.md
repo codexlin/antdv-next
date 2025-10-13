@@ -18,54 +18,53 @@
 
 ```ts
 // affix/style/index.ts
-import type { CSSObject } from '@ant-design/cssinjs';
+import type { CSSObject } from '@ant-design/cssinjs'
 
-import type { FullToken, GenerateStyle, GetDefaultToken } from '../../theme/internal';
-import { genStyleHooks } from '../../theme/internal';
+import type { FullToken, GenerateStyle, GetDefaultToken } from '../../theme/internal'
+import { genStyleHooks } from '../../theme/internal'
 
 export interface ComponentToken {
-    /**
-     * @desc 弹出层的 z-index
-     * @descEN z-index of popup
-     */
-    zIndexPopup: number;
+  /**
+   * @desc 弹出层的 z-index
+   * @descEN z-index of popup
+   */
+  zIndexPopup: number
 }
 
 interface AffixToken extends FullToken<'Affix'> {
-    //
+  //
 }
 
 // ============================== Shared ==============================
 const genSharedAffixStyle: GenerateStyle<AffixToken> = (token): CSSObject => {
-    const { componentCls } = token;
-    return {
-        [componentCls]: {
-            position: 'fixed',
-            zIndex: token.zIndexPopup,
-        },
-    };
-};
+  const { componentCls } = token
+  return {
+    [componentCls]: {
+      position: 'fixed',
+      zIndex: token.zIndexPopup,
+    },
+  }
+}
 
-export const prepareComponentToken: GetDefaultToken<'Affix'> = (token) => ({
-    zIndexPopup: token.zIndexBase + 10,
-});
+export const prepareComponentToken: GetDefaultToken<'Affix'> = token => ({
+  zIndexPopup: token.zIndexBase + 10,
+})
 
 // ============================== Export ==============================
-export default genStyleHooks('Affix', genSharedAffixStyle, prepareComponentToken);
- 
+export default genStyleHooks('Affix', genSharedAffixStyle, prepareComponentToken)
 ```
-
 
 ```vue
 <script lang="ts" setup>
-  import useStyle  from "./style";
-  const { cssVarCls } = useStyle()
-  // 这里的cssVarCls生成的就是几个计算属性的类名 其中包含 ant-affix-css-var 和一个专属于当前组件的类名 ant-affix-css-var-hash 
-  // 这么做的目的，当一个组件被多次使用的时候，但是其中一个出现了变体，但是其他的没有变体，那么就可以借用hash的类名只覆盖当前这个组件的样式，而不会影响其他组件
-  // 或者我们还有更好的方案，就是添加一个cssVarStyle属性（计算属性，保证响应式），直接把样式的cssvar变量放到style标签中，你记住这里面只有cssvar变量，不会存在任何其他的样式信息
+import useStyle from './style'
+
+const { cssVarCls } = useStyle()
+// 这里的cssVarCls生成的就是几个计算属性的类名 其中包含 ant-affix-css-var 和一个专属于当前组件的类名 ant-affix-css-var-hash
+// 这么做的目的，当一个组件被多次使用的时候，但是其中一个出现了变体，但是其他的没有变体，那么就可以借用hash的类名只覆盖当前这个组件的样式，而不会影响其他组件
+// 或者我们还有更好的方案，就是添加一个cssVarStyle属性（计算属性，保证响应式），直接把样式的cssvar变量放到style标签中，你记住这里面只有cssvar变量，不会存在任何其他的样式信息
 </script>
 
 <template>
-  <div :class="cssVarCls"></div>
+  <div :class="cssVarCls" />
 </template>
 ```

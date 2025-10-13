@@ -50,6 +50,7 @@ const linter: Linter = (key, value, info) => {
         )
       }
       return
+    // @ts-expect-error this is
     case 'borderRadius':
       if (typeof value === 'string') {
         const radiusGroups = value.split('/').map(item => item.trim())
@@ -80,7 +81,7 @@ const linter: Linter = (key, value, info) => {
           )
         }
       }
-
+    // eslint-disable-next-line no-fallthrough
     default:
   }
 }

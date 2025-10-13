@@ -1,9 +1,10 @@
-import { defineComponent, h, ref } from 'vue'
+import type { StyleContextProps } from '../src/StyleContext'
 import { mount } from '@vue/test-utils'
+import { defineComponent, h, ref } from 'vue'
 import {
   createCache,
+
   useStyleContextProvide,
-  type StyleContextProps,
 } from '../src/StyleContext'
 
 export function mountWithStyleProvider(

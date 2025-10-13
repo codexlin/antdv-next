@@ -6,12 +6,12 @@ function genFontMapToken(fontSize: number): FontMapToken {
   const fontSizes = fontSizePairs.map(pair => pair.size)
   const lineHeights = fontSizePairs.map(pair => pair.lineHeight)
 
-  const fontSizeMD = fontSizes[1]
-  const fontSizeSM = fontSizes[0]
-  const fontSizeLG = fontSizes[2]
-  const lineHeight = lineHeights[1]
-  const lineHeightSM = lineHeights[0]
-  const lineHeightLG = lineHeights[2]
+  const fontSizeMD = fontSizes[1]!
+  const fontSizeSM = fontSizes[0]!
+  const fontSizeLG = fontSizes[2]!
+  const lineHeight = lineHeights[1]!
+  const lineHeightSM = lineHeights[0]!
+  const lineHeightLG = lineHeights[2]!
 
   return {
     fontSizeSM,
@@ -38,7 +38,7 @@ function genFontMapToken(fontSize: number): FontMapToken {
     lineHeightHeading3: lineHeights[4],
     lineHeightHeading4: lineHeights[3],
     lineHeightHeading5: lineHeights[2],
-  }
+  } as FontMapToken
 }
 
 export default genFontMapToken

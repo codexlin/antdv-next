@@ -3,7 +3,8 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev": "pnpm -F playground dev"
+    "dev": "pnpm -F playground dev",
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "vue": "^3.5.22"
@@ -16,6 +17,7 @@
     "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vue/tsconfig": "^0.8.1",
     "eslint": "^9.37.0",
+    "eslint-plugin-format": "^1.0.2",
     "jiti": "^2.6.1",
     "jsdom": "^27.0.0",
     "tsdown": "^0.15.6",

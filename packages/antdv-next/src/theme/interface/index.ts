@@ -1,6 +1,6 @@
 import type { CSSInterpolation, DerivativeFunc } from '@antdv-next/cssinjs'
 import type { VNodeChild } from 'vue'
-import type { AnyObject } from '../../_util/type.ts'
+import type { AnyObject } from '../../_util/type'
 
 import type { AliasToken } from './alias'
 

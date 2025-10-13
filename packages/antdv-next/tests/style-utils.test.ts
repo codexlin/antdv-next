@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
 import { genCompactItemStyle } from '../src/style/compact-item'
-import { genRoundedArrow, getArrowToken } from '../src/style/roundedArrow'
 import getArrowStyle, { getArrowOffsetToken } from '../src/style/placementArrow'
+import { genRoundedArrow, getArrowToken } from '../src/style/roundedArrow'
 
 const mockToken = {
   componentCls: '.ant-btn',
