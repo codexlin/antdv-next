@@ -92,14 +92,12 @@ export default function useCSSVarRegister<
       }
 
       const context = styleContext.value
-
       const style = updateCSS(cssVarsStr, styleId, {
         mark: ATTR_MARK,
         prepend: 'queue',
         attachTo: context.container,
         priority: -999,
       })
-
       ;(style as any)[CSS_IN_JS_INSTANCE] = context.cache.instanceId
       style.setAttribute(ATTR_TOKEN, cssVarKey)
     },

@@ -1,6 +1,6 @@
 import hash from '@emotion/hash'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, ref } from 'vue'
+import { computed, defineComponent, h, nextTick, ref } from 'vue'
 import useCacheToken, { extract as extractToken } from '../src/hooks/useCacheToken'
 import { ATTR_TOKEN, createCache } from '../src/StyleContext'
 import { createTheme } from '../src/theme'
@@ -15,10 +15,10 @@ interface DerivativeToken extends DesignToken {
   colorPrimaryHover: string
 }
 
-const theme = createTheme<DesignToken, DerivativeToken>(token => ({
+const theme = ref<any>(createTheme<DesignToken, DerivativeToken>(token => ({
   ...token,
   colorPrimaryHover: `${token.colorPrimary}80`,
-}))
+})))
 
 describe('useCacheToken', () => {
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe('useCacheToken', () => {
 
     const Demo = defineComponent({
       setup() {
-        cacheRef = useCacheToken<DerivativeToken, DesignToken>(theme, [() => baseToken.value])
+        cacheRef = useCacheToken<DerivativeToken, DesignToken>(theme, ref([() => baseToken.value]))
         return () => h('div', { class: cacheRef.value[1] })
       },
     })
@@ -73,12 +73,12 @@ describe('useCacheToken', () => {
 
     const Demo = defineComponent({
       setup() {
-        cacheRef = useCacheToken(theme, [() => baseToken.value], {
+        cacheRef = useCacheToken(theme, computed(() => [() => baseToken.value]), computed(() => ({
           cssVar: {
             key: 'demo-token',
             prefix: 'demo',
           },
-        })
+        })))
         return () => h('div')
       },
     })
@@ -98,7 +98,6 @@ describe('useCacheToken', () => {
       colorPrimary: '#52c41a',
       borderRadius: 6,
     }
-
     await nextTick()
 
     expect(styleEl?.textContent).toContain('--demo-color-primary:#52c41a;')
@@ -116,14 +115,14 @@ describe('useCacheToken', () => {
 
     const Demo = defineComponent({
       setup() {
-        cacheRef = useCacheToken(theme, [
+        cacheRef = useCacheToken(theme, computed(() => [
           () => ({ colorPrimary: '#1677ff', borderRadius: 2 }),
-        ], {
+        ]), computed(() => ({
           cssVar: {
             key: 'extract',
             prefix: 'extract',
           },
-        })
+        })))
 
         return () => h('div')
       },
@@ -144,9 +143,9 @@ describe('useCacheToken', () => {
 
     const Demo = defineComponent({
       setup() {
-        cacheRef = useCacheToken(theme, [
+        cacheRef = useCacheToken(theme, ref([
           () => ({ colorPrimary: '#1677ff', borderRadius: 2 }),
-        ], {
+        ]), ref({
           override: {
             colorPrimary: '#000000',
           },
@@ -154,7 +153,7 @@ describe('useCacheToken', () => {
             ...token,
             customColor: token.colorPrimary,
           }),
-        })
+        }))
 
         return () => h('div')
       },

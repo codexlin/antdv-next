@@ -54,7 +54,7 @@ function genStyleUtils<
       const { cssVar, realToken, token } = tokenData
       const finalRealToken = realToken ?? token
 
-      const hasCSSVar = computed(() => unref(cssVar)?.key)
+      const hasCSSVar = computed(() => cssVar?.value?.key)
 
       if (options.injectStyle !== false && hasCSSVar.value) {
         const registerConfig = computed(() => {
@@ -114,8 +114,8 @@ function genStyleUtils<
       const finalRealToken = realToken ?? token
 
       const prefix = usePrefix()
-      const iconPrefixCls = computed(() => prefix.value.iconPrefixCls || 'anticon')
-      const rootPrefixCls = computed(() => prefix.value.rootPrefixCls || 'ant')
+      const iconPrefixCls = computed(() => prefix?.value?.iconPrefixCls || 'anticon')
+      const rootPrefixCls = computed(() => prefix?.value?.rootPrefixCls || 'ant')
       const csp = useCSP()
 
       const type = computed<'css' | 'js'>(() => unref(cssVar) ? 'css' : 'js')

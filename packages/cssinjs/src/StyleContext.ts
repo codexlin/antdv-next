@@ -1,7 +1,7 @@
 import type { InjectionKey, Ref } from 'vue'
 import type { Linter } from './linters'
 import defu from 'defu'
-import { computed, defineComponent, inject, provide, ref } from 'vue'
+import { computed, defineComponent, inject, markRaw, provide, ref } from 'vue'
 
 /**
  * @description Style Context
@@ -53,7 +53,7 @@ export function createCache() {
     )
   }
 
-  return new CacheEntity(cssinjsInstanceId)
+  return markRaw(new CacheEntity(cssinjsInstanceId))
 }
 const defaultStyleContext: StyleContextProps = {
   defaultCache: true,

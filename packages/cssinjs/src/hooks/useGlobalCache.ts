@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { KeyType } from '../Cache'
-import { computed, watchEffect } from 'vue'
+import { computed, watch, watchEffect } from 'vue'
 import { pathKey } from '../Cache'
 import { useStyleContext } from '../StyleContext'
 
@@ -51,35 +51,41 @@ export function useGlobalCache<CacheType>(
   }
 
   // Initial cache creation - watch for keyPath changes
-  watchEffect((onCleanup) => {
+  watch(
+    fullPathStr,
+    (_, _1, onCleanup) => {
     // Build or retrieve cache
-    buildCache(([times, cache]) => [times + 1, cache])
-    const globalCache = styleContext.value.cache
+      buildCache(([times, cache]) => [times + 1, cache])
+      const globalCache = styleContext.value.cache
 
-    // Cleanup on unmount or when fullPathStr changes
-    onCleanup(() => {
-      globalCache.opUpdate(fullPathStr.value, (prevCache) => {
-        if (!prevCache)
-          return null
+      // Cleanup on unmount or when fullPathStr changes
+      onCleanup(() => {
+        globalCache.opUpdate(fullPathStr.value, (prevCache) => {
+          if (!prevCache)
+            return null
 
-        const [times = 0, cache] = prevCache
-        const nextCount = times - 1
+          const [times = 0, cache] = prevCache
+          const nextCount = times - 1
 
-        if (nextCount === 0) {
+          if (nextCount === 0) {
           // Last reference, remove cache
-          onCacheRemove?.(cache, false)
-          return null
-        }
+            onCacheRemove?.(cache, false)
+            return null
+          }
 
-        return [nextCount, cache]
+          return [nextCount, cache]
+        })
       })
-    })
-  })
+    },
+    {
+      immediate: true,
+    },
+  )
 
   const getCacheEntity = () => styleContext.value.cache.opGet(fullPathStr.value)
 
   const cacheContent = computed(() => {
-    let entity = getCacheEntity()
+    let entity = styleContext.value.cache.opGet(fullPathStr.value)
 
     if (isDev && !entity) {
       buildCache()
