@@ -31,7 +31,6 @@ export interface AffixProps extends ComponentBaseProps {
   offsetBottom?: number
   /** Set the element that Affix needs to listen to its scroll event, the value is a function that returns the corresponding DOM element */
   target?: () => Window | HTMLElement | null
-  prefixCls?: string
 }
 
 export interface AffixEmits {

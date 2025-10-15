@@ -26,6 +26,7 @@ export type MappingAlgorithm = DerivativeFunc<SeedToken, MapToken>
 
 export interface ComponentBaseProps {
   rootClass?: string
+  prefixCls?: string
 }
 
 type ComponentsConfig = {
