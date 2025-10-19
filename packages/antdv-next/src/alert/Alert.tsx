@@ -64,7 +64,7 @@ interface IconNodeProps {
   description: AlertProps['description']
 }
 const alertDefaultProps = {
-
+  showIcon: undefined,
 } as any
 
 const IconNode = defineComponent<IconNodeProps>(
