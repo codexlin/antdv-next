@@ -2,6 +2,7 @@ import type { DerivativeFunc } from '@antdv-next/cssinjs'
 import type { CSSProperties, InjectionKey, Ref } from 'vue'
 import type { ShowWaveEffect } from '../_util/wave/interface.ts'
 import type { AlertProps } from '../alert/Alert.tsx'
+import type { BadgeProps } from '../badge'
 import type { ButtonProps } from '../button'
 import type { FlexProps } from '../flex/interface.ts'
 import type { SpaceProps } from '../space'
@@ -152,6 +153,8 @@ export type FlexConfig = ComponentStyleConfig & Pick<FlexProps, 'vertical'>
 
 export type AlertConfig = ComponentStyleConfig & Pick<AlertProps, 'closable' | 'closeIcon'>
 
+export type BadgeConfig = ComponentStyleConfig & Pick<BadgeProps, 'classes' | 'styles'>
+
 export interface ConfigComponentProps {
   space?: SpaceConfig
   button?: ButtonConfig
@@ -159,6 +162,8 @@ export interface ConfigComponentProps {
   divider?: ComponentStyleConfig
   alert?: AlertConfig
   anchor?: ComponentStyleConfig
+  badge?: BadgeConfig
+
 }
 
 export interface ConfigConsumerProps extends ConfigComponentProps {

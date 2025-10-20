@@ -5,7 +5,7 @@ import type { ComponentToken as AnchorComponentToken } from '../../anchor/style'
 // import type { ComponentToken as AppComponentToken } from '../../app/style';
 // import type { ComponentToken as AvatarComponentToken } from '../../avatar/style';
 // import type { ComponentToken as BackTopComponentToken } from '../../back-top/style'
-// import type { ComponentToken as BadgeComponentToken } from '../../badge/style';
+import type { ComponentToken as BadgeComponentToken } from '../../badge/style'
 // import type { ComponentToken as BreadcrumbComponentToken } from '../../breadcrumb/style';
 import type { ComponentToken as ButtonComponentToken } from '../../button/style'
 // import type { ComponentToken as CalendarComponentToken } from '../../calendar/style';
@@ -71,7 +71,7 @@ export interface ComponentTokenMap {
   Anchor?: AnchorComponentToken
   // Avatar?: AvatarComponentToken;
   // BackTop?: BackTopComponentToken
-  // Badge?: BadgeComponentToken;
+  Badge?: BadgeComponentToken
   Button?: ButtonComponentToken
   // Breadcrumb?: BreadcrumbComponentToken;
   // Card?: CardComponentToken;
