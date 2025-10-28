@@ -50,7 +50,6 @@ const Flex = defineComponent<FlexProps, Record<string, any>, string, SlotsType<F
       if (flex) {
         mergedStyle.flex = flex
       }
-
       if (gap && !isPresetSize(gap)) {
         mergedStyle.gap = gap
       }
@@ -59,7 +58,8 @@ const Flex = defineComponent<FlexProps, Record<string, any>, string, SlotsType<F
         component,
         {
           class: [mergedCls, attrs.class],
-          ...omit(attrs, ['class']),
+          style: [mergedStyle, attrs.style],
+          ...omit(attrs, ['class', 'style']),
         },
         {
           default: slots.default,
