@@ -26,7 +26,6 @@ export interface EmptyProps extends ComponentBaseProps {
   styles?: Partial<Record<SemanticName, CSSProperties>>
   image?: VueNode
   description?: VueNode
-  children?: VueNode
 }
 
 export interface EmptySlots {
@@ -35,20 +34,25 @@ export interface EmptySlots {
   default: () => any
 }
 
+const defaultProps = {
+  image: undefined,
+  description: undefined,
+}
+
 const Empty = defineComponent<
   EmptyProps,
   Record<string, any>,
   string,
   SlotsType<EmptySlots>
 >(
-  (props, { slots, attrs }) => {
+  (props = defaultProps, { slots, attrs }) => {
     const { prefixCls, direction } = useBaseConfig('empty', props)
     const componentConfig = useComponentConfig('empty')
     const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
     const [locale] = useLocale('Empty')
     return () => {
       const description = getSlotPropsFnRun(slots, props, 'description')
-      const des = description || locale?.value?.description
+      const des = description ?? locale?.value?.description
       const alt = typeof des === 'string' ? des : 'empty'
       const mergedImage = getSlotPropsFnRun(slots, props, 'image') ?? componentConfig.value?.image ?? defaultEmptyImg
       let imageNode: any = null
@@ -71,8 +75,8 @@ const Empty = defineComponent<
             prefixCls.value,
             componentConfig?.value?.class,
             {
-              [`${prefixCls}-normal`]: mergedImage === simpleEmptyImg,
-              [`${prefixCls}-rtl`]: direction.value === 'rtl',
+              [`${prefixCls.value}-normal`]: mergedImage === simpleEmptyImg,
+              [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
             },
             props.rootClass,
             contextClassNames?.root,
@@ -108,7 +112,7 @@ const Empty = defineComponent<
               {des}
             </div>
           )}
-          {children.length && (
+          {!!children.length && (
             <div
               class={classNames(
                 `${prefixCls.value}-footer`,
@@ -136,4 +140,7 @@ const Empty = defineComponent<
   app.component(Empty.name, Empty)
 }
 
-export default Empty
+export default Empty as typeof Empty & {
+  PRESENTED_IMAGE_DEFAULT: typeof defaultEmptyImg
+  PRESENTED_IMAGE_SIMPLE: typeof simpleEmptyImg
+}

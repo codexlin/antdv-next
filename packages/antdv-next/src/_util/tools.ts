@@ -12,7 +12,7 @@ export function getSlotPropFn(slots: any, props: any, key: string) {
 export function getSlotPropsFnRun(slots: any, props: any, key: string) {
   const fn = getSlotPropFn(slots, props, key)
   if (typeof fn === 'function') {
-    const nodes = filterEmpty(fn?.()).filter(Boolean)
+    const nodes = filterEmpty(fn?.()).filter(v => v != null)
     if (nodes.length) {
       if (nodes.length === 1) {
         return nodes[0]
