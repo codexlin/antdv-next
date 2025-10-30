@@ -58,7 +58,7 @@ export interface DescriptionsSlots {
   contentRender?: (item: DescriptionsItemType, index: number) => any
 }
 
-const Description = defineComponent<
+const Descriptions = defineComponent<
   DescriptionsProps,
   EmptyEmit,
   string,
@@ -196,7 +196,7 @@ const Description = defineComponent<
     inheritAttrs: false,
   },
 )
-;(Description as any).install = (app: App) => {
-  app.component(Description.name, Description)
+;(Descriptions as any).install = (app: App) => {
+  app.component(Descriptions.name, Descriptions)
 }
-export default Description
+export default Descriptions
