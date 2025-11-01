@@ -31,7 +31,7 @@ export interface BaseButtonProps extends ComponentBaseProps {
   color?: ButtonColorType
   variant?: ButtonVariantType
   icon?: RenderNodeFn
-  iconPosition?: 'start' | 'end'
+  iconPlacement?: 'start' | 'end' // deprecated
   shape?: ButtonShape
   size?: SizeType
   disabled?: boolean
@@ -95,7 +95,7 @@ export interface ButtonSlots {
 }
 
 const defaultButtonProps = {
-  iconPosition: 'start',
+  iconPlacement: 'start',
   htmlType: 'button',
   autoInsertSpace: undefined,
   disabled: undefined,
@@ -267,7 +267,7 @@ const InternalCompoundedButton = defineComponent<
           [`${prefixCls.value}-two-chinese-chars`]: hasTwoCNChar.value && mergedInsertSpace.value && !innerLoading.value,
           [`${prefixCls.value}-block`]: props.block,
           [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
-          [`${prefixCls.value}-icon-end`]: props.iconPosition === 'end',
+          [`${prefixCls.value}-icon-end`]: props.iconPlacement === 'end',
         },
         compactItemClassnames.value,
         componentCtx.value.class,

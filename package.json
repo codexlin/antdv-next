@@ -18,7 +18,7 @@
     "@vue/tsconfig": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-format": "catalog:",
-    "esno": "^4.8.0",
+    "esno": "catalog:",
     "jiti": "catalog:",
     "jsdom": "catalog:",
     "tsdown": "catalog:",

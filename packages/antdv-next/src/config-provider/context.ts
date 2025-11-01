@@ -5,6 +5,7 @@ import type { ShowWaveEffect } from '../_util/wave/interface.ts'
 import type { AlertProps } from '../alert'
 import type { BadgeProps } from '../badge'
 import type { ButtonProps } from '../button'
+import type { CollapseProps } from '../collapse/Collapse.tsx'
 import type { DescriptionsProps } from '../descriptions'
 import type { EmptyProps } from '../empty'
 import type { FlexProps } from '../flex'
@@ -169,6 +170,8 @@ export type SpinConfig = ComponentStyleConfig & Pick<SpinProps, 'indicator'>
 
 export type DescriptionsConfig = ComponentStyleConfig & Pick<DescriptionsProps, 'styles' | 'classes'>
 
+export type CollapseConfig = ComponentStyleConfig & Pick<CollapseProps, 'expandIcon'>
+
 export interface ConfigComponentProps {
   // input?: InputConfig;
   // textArea?: TextAreaConfig;
@@ -187,7 +190,7 @@ export interface ConfigComponentProps {
   carousel?: ComponentStyleConfig
   // cascader?: CascaderConfig;
   // treeSelect?: TreeSelectConfig;
-  // collapse?: CollapseConfig;
+  collapse?: CollapseConfig
   // floatButton?: FloatButtonConfig;
   // floatButtonGroup?: FloatButtonGroupConfig;
   typography?: ComponentStyleConfig

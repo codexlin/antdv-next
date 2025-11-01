@@ -38,11 +38,11 @@
   },
   "dependencies": {
     "@ant-design/colors": "catalog:",
-    "@ant-design/icons-svg": "^4.4.2",
+    "@ant-design/icons-svg": "catalog:",
     "@v-c/util": "catalog:",
     "es-toolkit": "catalog:"
   },
   "devDependencies": {
-    "pkg-types": "^2.3.0"
+    "pkg-types": "catalog:"
   }
 }
