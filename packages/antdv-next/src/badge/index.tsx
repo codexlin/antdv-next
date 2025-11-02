@@ -1,6 +1,7 @@
 import type { LiteralUnion } from '@v-c/util/dist/type'
 import type { App, CSSProperties, SlotsType, VNode } from 'vue'
 import type { PresetStatusColorType } from '../_util/colors.ts'
+import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks'
 import type { EmptyEmit, VueNode } from '../_util/type.ts'
 import type { ComponentBaseProps } from '../config-provider/context.ts'
 import type { PresetColorKey } from '../theme/interface'
@@ -9,15 +10,24 @@ import { classNames } from '@v-c/util'
 import { filterEmpty } from '@v-c/util/dist/props-util'
 import { cloneVNode, computed, defineComponent, shallowRef, Transition, watchEffect } from 'vue'
 import { isPresetColor } from '../_util/colors.ts'
-import { getTransitionProps } from '../_util/motion.ts'
-import { getSlotPropsFnRun } from '../_util/tools.ts'
-import { useConfig } from '../config-provider/context.ts'
-import Ribbon from './Ribbon.tsx'
-import ScrollNumber from './ScrollNumber.tsx'
+import {
 
+  useMergeSemantic,
+  useToArr,
+  useToProps,
+} from '../_util/hooks'
+import { getTransitionProps } from '../_util/motion.ts'
+import { clsx, getSlotPropsFnRun, toPropsRefs } from '../_util/tools.ts'
+import { useComponentBaseConfig } from '../config-provider/context.ts'
+import Ribbon from './Ribbon.tsx'
+
+import ScrollNumber from './ScrollNumber.tsx'
 import useStyle from './style'
 
 type SemanticName = 'root' | 'indicator'
+
+export type BadgeClassNamesType = SemanticClassNamesType<BadgeProps, SemanticName>
+export type BadgeStylesType = SemanticStylesType<BadgeProps, SemanticName>
 
 export interface BadgeProps extends ComponentBaseProps {
   /** Number to show in badge */
@@ -34,8 +44,8 @@ export interface BadgeProps extends ComponentBaseProps {
   size?: 'default' | 'small'
   offset?: [number | string, number | string]
   title?: string
-  classes?: Partial<Record<SemanticName, string>>
-  styles?: Partial<Record<SemanticName, CSSProperties>>
+  classes?: BadgeClassNamesType
+  styles?: BadgeStylesType
 }
 
 export interface BadgeSlots {
@@ -57,8 +67,29 @@ const InternalBadge = defineComponent<
   SlotsType<BadgeSlots>
 >(
   (props = defaultProps, { slots, attrs, expose }) => {
-    const configContext = useConfig()
-    const prefixCls = computed(() => configContext.value.getPrefixCls('badge', props.prefixCls))
+    const {
+      class: contextClassName,
+      style: contextStyle,
+      classes: contextClassNames,
+      styles: contextStyles,
+      prefixCls,
+      direction,
+      getPrefixCls,
+    } = useComponentBaseConfig('badge', props)
+    const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
+
+    // =========== Merged Props for Semantic ===========
+    const mergedProps = computed(() => props)
+    const [mergedClassNames, mergedStyles] = useMergeSemantic<
+      BadgeClassNamesType,
+      BadgeStylesType,
+      BadgeProps
+    >(
+      useToArr(contextClassNames, classes),
+      useToArr(contextStyles, styles),
+      useToProps(mergedProps),
+    )
+
     const badgeRef = shallowRef<HTMLSpanElement>()
     expose({ badgeRef })
     const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
@@ -102,30 +133,6 @@ const InternalBadge = defineComponent<
     const countCacheRef = shallowRef<VueNode | null>(props.count ?? null)
     const isDotRef = shallowRef(showAsDot.value)
 
-    const mergedOffsetStyles = computed(() => {
-      const styleList: CSSProperties[] = []
-      const { offset } = props
-      if (offset) {
-        const horizontal = offset[0]
-        const vertical = offset[1]
-        const offsetStyle: CSSProperties = {
-          marginTop: vertical as any,
-        }
-        const horizontalValue = typeof horizontal === 'number' ? horizontal : Number.parseInt(horizontal as string, 10)
-        if (configContext.value.direction === 'rtl') {
-          offsetStyle.left = horizontalValue
-        }
-        else {
-          offsetStyle.right = -horizontalValue
-        }
-        styleList.push(offsetStyle)
-      }
-      if (configContext.value.badge?.style) {
-        styleList.push(configContext.value.badge.style)
-      }
-      return styleList
-    })
-
     watchEffect(() => {
       if (!isHidden.value) {
         displayCountRef.value = mergedCount.value
@@ -144,6 +151,20 @@ const InternalBadge = defineComponent<
       }
     })
 
+    // =============================== Styles ===============================
+    const mergedStyle = computed(() => {
+      if (!props.offset) {
+        return { ...contextStyle.value, ...(attrs.style as CSSProperties) }
+      }
+      const horizontalOffset = Number.parseInt(props.offset[0] as string, 10)
+
+      const offsetStyle: CSSProperties = {
+        marginTop: props.offset[1],
+        insetInlineEnd: direction.value === 'rtl' ? horizontalOffset : -horizontalOffset,
+      }
+      return { ...contextStyle.value, ...offsetStyle, ...(attrs.style as CSSProperties) }
+    })
+
     const displayCount = computed(() => displayCountRef.value)
     const isInternalColor = computed(() => isPresetColor(props.color, false))
 
@@ -158,9 +179,8 @@ const InternalBadge = defineComponent<
       const hasTextSlot = textNodes.value.length > 0
       const showStatusTextNode = !isHidden.value && (hasTextSlot ? true : (props.text === 0 ? props.showZero : !!props.text && props.text !== true))
 
-      const statusCls = classNames(
-        props.classes?.indicator,
-        configContext.value.badge?.classes?.indicator,
+      const statusCls = clsx(
+        mergedClassNames.value.indicator,
         {
           [`${prefixCls.value}-status-dot`]: hasStatus.value,
           [`${prefixCls.value}-status-${props.status}`]: !!props.status,
@@ -173,26 +193,15 @@ const InternalBadge = defineComponent<
         {
           [`${prefixCls.value}-status`]: hasStatus.value,
           [`${prefixCls.value}-not-a-wrapper`]: children.length === 0,
-          [`${prefixCls.value}-rtl`]: configContext.value.direction === 'rtl',
+          [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
         },
-        configContext.value.badge?.class,
-        configContext.value.badge?.classes?.root,
-        props.classes?.root,
+        (attrs as any).class,
         props.rootClass,
+        contextClassName.value,
+        mergedClassNames.value?.root,
         hashId.value,
         cssVarCls.value,
-        attrClass as any,
       )
-
-      const indicatorStyleList: CSSProperties[] = [
-        configContext.value.badge?.styles?.indicator,
-        props.styles?.indicator,
-      ].filter(Boolean) as CSSProperties[]
-
-      const rootStyleListBase: CSSProperties[] = [
-        configContext.value.badge?.styles?.root,
-        props.styles?.root,
-      ].filter(Boolean) as CSSProperties[]
 
       const statusStyle: CSSProperties = {}
       if (props.color && !isInternalColor.value) {
@@ -212,38 +221,25 @@ const InternalBadge = defineComponent<
       }
 
       if (!children.length && hasStatus.value && (showStatusTextNode || hasStatusValue.value || !ignoreCount.value)) {
-        const rootStyleList = [...rootStyleListBase, ...mergedOffsetStyles.value, attrStyle].filter(Boolean) as CSSProperties[]
-        const mergedRootStyle = Object.assign({}, ...rootStyleList)
-        const statusIndicatorStyleList = [...indicatorStyleList, statusStyle].filter(Boolean) as CSSProperties[]
+        const statusTextColor = mergedStyle.value?.color
         return wrapCSSVar(
           <span
             {...restAttrs}
             ref={badgeRef}
             class={badgeClassName}
-            style={rootStyleList.length ? rootStyleList : undefined}
+            style={[mergedStyles.value.root, mergedStyle.value]}
           >
             <span
               class={statusCls}
-              style={statusIndicatorStyleList.length ? Object.assign({}, ...statusIndicatorStyleList) : undefined}
+              style={[mergedStyles.value.indicator, statusStyle]}
             />
-            {renderStatusText(mergedRootStyle.color ? { color: mergedRootStyle.color } : undefined)}
+            {renderStatusText({ color: statusTextColor })}
           </span>,
         )
       }
 
-      const mergedIndicatorStyleList = [
-        ...indicatorStyleList,
-        ...mergedOffsetStyles.value,
-        attrStyle,
-      ].filter(Boolean) as CSSProperties[]
-      const indicatorStyle = Object.assign({}, ...mergedIndicatorStyleList)
-      if (props.color && !isInternalColor.value) {
-        indicatorStyle.background = props.color
-      }
-
       const scrollNumberCls = classNames(
-        props.classes?.indicator,
-        configContext.value.badge?.classes?.indicator,
+        mergedClassNames.value.indicator,
         {
           [`${prefixCls.value}-dot`]: isDotRef.value,
           [`${prefixCls.value}-count`]: !isDotRef.value,
@@ -254,27 +250,24 @@ const InternalBadge = defineComponent<
         },
       )
 
-      const scrollNumberPrefixCls = configContext.value.getPrefixCls('scroll-number', props.scrollNumberPrefixCls)
-
-      const rootStyle = rootStyleListBase.length ? rootStyleListBase : undefined
+      const scrollNumberPrefixCls = getPrefixCls('scroll-number', props.scrollNumberPrefixCls)
 
       const livingVNode = (livingCount && typeof livingCount === 'object') ? livingCount as VNode : null
       const clonedNode = livingVNode
         ? cloneVNode(livingVNode, {
-            style: [
-              ...mergedOffsetStyles.value,
-              attrStyle,
-              (livingVNode.props && (livingVNode.props as any).style) || undefined,
-            ].filter(Boolean),
+            style: mergedStyle.value,
           })
         : undefined
-
+      const scrollNumberStyle: CSSProperties = {}
+      if (props.color && !isInternalColor.value) {
+        scrollNumberStyle.background = props.color
+      }
       return wrapCSSVar(
         <span
           {...restAttrs}
           ref={badgeRef}
           class={badgeClassName}
-          style={rootStyle}
+          style={mergedStyles.value.root}
         >
           {children}
           <Transition
@@ -292,7 +285,7 @@ const InternalBadge = defineComponent<
                       class={scrollNumberCls}
                       count={displayCount.value}
                       title={titleNode}
-                      style={indicatorStyle}
+                      style={[mergedStyles.value?.indicator, mergedStyle.value, scrollNumberStyle]}
                     >
                       {clonedNode}
                     </ScrollNumber>
