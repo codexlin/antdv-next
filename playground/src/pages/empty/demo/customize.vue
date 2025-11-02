@@ -15,7 +15,3 @@
     </a-button>
   </a-empty>
 </template>
-
-<style scoped>
-
-</style>

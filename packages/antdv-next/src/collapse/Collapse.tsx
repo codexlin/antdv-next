@@ -1,5 +1,6 @@
-import type { ItemType, CollapseProps as VcCollapseProps } from '@v-c/collapse'
+import type { ItemType } from '@v-c/collapse'
 import type { App, CSSProperties, SlotsType } from 'vue'
+import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks'
 import type { VueNode } from '../_util/type.ts'
 import type { SizeType } from '../config-provider/SizeContext.tsx'
 import type { CollapsibleType } from './CollapsePanel.tsx'
@@ -8,15 +9,29 @@ import VcCollapse from '@v-c/collapse'
 import { classNames } from '@v-c/util'
 import { omit } from 'es-toolkit'
 import { computed, defineComponent } from 'vue'
+import {
+  useMergeSemantic,
+  useToArr,
+  useToProps,
+} from '../_util/hooks'
 import initCollapseMotion from '../_util/motion.ts'
+import { toPropsRefs } from '../_util/tools.ts'
 import { checkRenderNode, cloneElement } from '../_util/vueNode.ts'
-import { useBaseConfig, useComponentConfig } from '../config-provider/context.ts'
+import { useComponentBaseConfig } from '../config-provider/context.ts'
 import { useSize } from '../config-provider/hooks/useSize.ts'
 import useStyle from './style'
 
-export type ExpandIconPosition = 'start' | 'end' | undefined
+export type ExpandIconPlacement = 'start' | 'end'
 
-export interface CollapseProps extends Pick<VcCollapseProps, 'items'> {
+export type CollapseSemanticName = 'root' | 'header' | 'title' | 'body' | 'icon'
+
+export type CollapseClassNamesType = SemanticClassNamesType<CollapseProps, CollapseSemanticName>
+export type CollapseStylesType = SemanticStylesType<CollapseProps, CollapseSemanticName>
+
+export type CollapseItemType = Omit<ItemType, 'children'> & {
+  content?: ItemType['children']
+}
+export interface CollapseProps {
   activeKey?: Array<string | number> | string | number
   defaultActiveKey?: Array<string | number> | string | number
   /** 手风琴效果 */
@@ -29,12 +44,15 @@ export interface CollapseProps extends Pick<VcCollapseProps, 'items'> {
   bordered?: boolean
   prefixCls?: string
   expandIcon?: (panelProps: PanelProps) => any
-  expandIconPosition?: ExpandIconPosition
+  expandIconPlacement?: ExpandIconPlacement
   ghost?: boolean
   size?: SizeType
   collapsible?: CollapsibleType
-  labelRender?: (params: { item: ItemType, index: number }) => any
-  contentRender?: (params: { item: ItemType, index: number }) => any
+  labelRender?: (params: { item: CollapseItemType, index: number }) => any
+  contentRender?: (params: { item: CollapseItemType, index: number }) => any
+  classes?: CollapseClassNamesType
+  styles?: CollapseStylesType
+  items?: CollapseItemType[]
 }
 
 export interface CollapseEmits {
@@ -55,12 +73,12 @@ interface PanelProps {
 
 interface CollapseSlots {
   expandIcon: (panelProps: PanelProps) => any
-  labelRender: (params: { item: ItemType, index: number }) => any
-  contentRender: (params: { item: ItemType, index: number }) => any
+  labelRender: (params: { item: CollapseItemType, index: number }) => any
+  contentRender: (params: { item: CollapseItemType, index: number }) => any
 }
 
 const defaults = {
-  expandIconPosition: 'start',
+  expandIconPlacement: 'start',
   bordered: true,
 } as any
 const Collapse = defineComponent<
@@ -70,16 +88,34 @@ const Collapse = defineComponent<
   SlotsType<CollapseSlots>
 >(
   (props = defaults, { attrs, emit, slots }) => {
-    const compCtx = useComponentConfig('collapse')
+    const {
+      class: contextClassName,
+      style: contextStyle,
+      classes: contextClassNames,
+      styles: contextStyles,
+      direction,
+      prefixCls,
+      getPrefixCls,
+      expandIcon,
+    } = useComponentBaseConfig('collapse', props, ['expandIcon'])
+    const { styles, classes } = toPropsRefs(props, 'styles', 'classes')
     const mergedSize = useSize<SizeType>(ctxSize => props?.size ?? ctxSize ?? 'middle')
-    const { direction, prefixCls, getPrefixCls } = useBaseConfig('collapse', props)
     const rootPrefixCls = getPrefixCls()
     const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
-
-    const mergedExpandIconPosition = computed(() => props.expandIconPosition)
+    const mergedPlacement = computed(() => props.expandIconPlacement ?? 'start')
+    const mergedProps = computed(() => props)
+    const [mergedClassNames, mergedStyles] = useMergeSemantic<
+      CollapseClassNamesType,
+      CollapseStylesType,
+      CollapseProps
+    >(
+      useToArr(contextClassNames, classes),
+      useToArr(contextStyles, styles),
+      useToProps(mergedProps),
+    )
 
     const renderExpandIcon = (panelProps: PanelProps = {}) => {
-      const mergedExpandIcon = slots?.expandIcon ?? props?.expandIcon ?? compCtx.value?.expandIcon
+      const mergedExpandIcon = slots?.expandIcon ?? props?.expandIcon ?? expandIcon.value
       const icon = typeof mergedExpandIcon === 'function'
         ? mergedExpandIcon?.(panelProps)
         : (
@@ -106,25 +142,26 @@ const Collapse = defineComponent<
     return () => {
       const { bordered, ghost, rootClass, destroyOnHidden } = props
       const collapseClassName = classNames(
-        `${prefixCls.value}-icon-position-${mergedExpandIconPosition.value}`,
+        `${prefixCls.value}-icon-position-${mergedPlacement.value}`,
         {
           [`${prefixCls.value}-borderless`]: !bordered,
           [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
           [`${prefixCls.value}-ghost`]: !!ghost,
           [`${prefixCls.value}-${mergedSize.value}`]: mergedSize.value !== 'middle',
         },
-        compCtx.value?.class,
+        contextClassName.value,
         (attrs as any).class,
         rootClass,
         hashId.value,
         cssVarCls.value,
+        mergedClassNames.value.root,
       )
       const labelRender = slots?.labelRender ?? props?.labelRender
       const contentRender = slots?.contentRender ?? props?.contentRender
       const items = (props.items ?? []).map((item, index) => {
         const label = checkRenderNode(labelRender ? labelRender?.({ item, index }) : item.label)
-        const children = checkRenderNode(contentRender ? contentRender?.({ item, index }) : item.children)
-        const _item = {
+        const children = checkRenderNode(contentRender ? contentRender?.({ item, index }) : item.content)
+        const _item: ItemType = {
           ...item,
         }
         if (label) {
@@ -139,11 +176,13 @@ const Collapse = defineComponent<
         <VcCollapse
           openMotion={openMotion.value}
           {...omit(attrs, ['class', 'style'])}
-          {...omit(props, ['rootClass', 'items'])}
+          {...omit(props, ['rootClass', 'items', 'expandIconPlacement', 'classes', 'styles']) as any}
           class={collapseClassName}
           prefixCls={prefixCls.value}
-          style={[compCtx.value.style, (attrs as any).style]}
+          style={[mergedStyles.value.root, contextStyle.value, (attrs as any).style]}
           expandIcon={renderExpandIcon}
+          classNames={mergedClassNames.value}
+          styles={mergedStyles.value}
           onChange={key => emit('change', key)}
           destroyOnHidden={destroyOnHidden}
           items={items}

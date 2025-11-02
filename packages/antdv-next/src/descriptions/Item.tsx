@@ -11,6 +11,6 @@ export interface DescriptionsItemProps extends ComponentBaseProps {
   label?: VueNode
   styles?: Partial<Record<SemanticName, CSSProperties>>
   classes?: Partial<Record<SemanticName, string>>
-  children?: VueNode
+  content?: VueNode
   span?: number | 'filled' | { [key in Breakpoint]?: number }
 }

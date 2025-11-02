@@ -1,12 +1,13 @@
-import type { App, CSSProperties, SlotsType } from 'vue'
+import type { App, SlotsType } from 'vue'
+import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks'
 import type { EmptyEmit, VueNode } from '../_util/type.ts'
 import type { ComponentBaseProps } from '../config-provider/context.ts'
 import { classNames } from '@v-c/util'
 import { filterEmpty } from '@v-c/util/dist/props-util'
-import { omit } from 'es-toolkit'
-import { defineComponent } from 'vue'
-import { getSlotPropsFnRun } from '../_util/tools.ts'
-import { useBaseConfig, useComponentConfig } from '../config-provider/context.ts'
+import { computed, defineComponent } from 'vue'
+import { pureAttrs, useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
+import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools.ts'
+import { useComponentBaseConfig, useComponentConfig } from '../config-provider/context.ts'
 import useLocale from '../locale/useLocale.ts'
 import DefaultEmptyImg from './empty'
 import SimpleEmptyImg from './simple'
@@ -20,10 +21,14 @@ const defaultEmptyImg = <DefaultEmptyImg />
 const simpleEmptyImg = <SimpleEmptyImg />
 
 export type SemanticName = 'root' | 'image' | 'description' | 'footer'
+export type EmptySemanticName = 'root' | 'image' | 'description' | 'footer'
+
+export type EmptyClassNamesType = SemanticClassNamesType<EmptyProps, EmptySemanticName>
+export type EmptyStylesType = SemanticStylesType<EmptyProps, EmptySemanticName>
 
 export interface EmptyProps extends ComponentBaseProps {
-  classes?: Partial<Record<SemanticName, string>>
-  styles?: Partial<Record<SemanticName, CSSProperties>>
+  classes?: EmptyClassNamesType
+  styles?: EmptyStylesType
   image?: VueNode
   description?: VueNode
 }
@@ -46,9 +51,27 @@ const Empty = defineComponent<
   SlotsType<EmptySlots>
 >(
   (props = defaultProps, { slots, attrs }) => {
-    const { prefixCls, direction } = useBaseConfig('empty', props)
     const componentConfig = useComponentConfig('empty')
+    const {
+      prefixCls,
+      direction,
+      class: contextClassName,
+      style: contextStyle,
+      classes: contextClassNames,
+      styles: contextStyles,
+    } = useComponentBaseConfig('empty', props)
+    const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
     const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [mergedClassNames, mergedStyles] = useMergeSemantic<
+      EmptyClassNamesType,
+      EmptyStylesType,
+      EmptyProps
+    >(
+      useToArr(contextClassNames, classes),
+      useToArr(contextStyles, styles),
+      useToProps(computed(() => props)),
+    )
+
     const [locale] = useLocale('Empty')
     return () => {
       const description = getSlotPropsFnRun(slots, props, 'description')
@@ -63,40 +86,34 @@ const Empty = defineComponent<
         imageNode = mergedImage
       }
       const children = filterEmpty(slots?.default?.() ?? [])
-      const contextClassNames = componentConfig?.value?.classes
-      const contextStyles = componentConfig?.value?.styles
-      const emptyClassNames = props?.classes
-      const emptyStyles = props?.styles
       return wrapCSSVar(
         <div
           class={classNames(
             hashId.value,
             cssVarCls.value,
             prefixCls.value,
-            componentConfig?.value?.class,
+            contextClassName.value,
             {
               [`${prefixCls.value}-normal`]: mergedImage === simpleEmptyImg,
               [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
             },
             props.rootClass,
-            contextClassNames?.root,
-            emptyClassNames?.root,
+            mergedClassNames.value.root,
             (attrs as any).class,
           )}
           style={[
-            contextStyles?.root,
+            mergedStyles.value.root,
+            contextStyle.value,
             (attrs as any).style,
-            emptyStyles?.root,
           ]}
-          {...omit(attrs, ['class', 'style'])}
+          {...pureAttrs(attrs)}
         >
           <div
             class={classNames(
               `${prefixCls.value}-image`,
-              contextClassNames?.image,
-              emptyClassNames?.image,
+              mergedClassNames.value.image,
             )}
-            style={[contextClassNames?.image, emptyStyles?.image]}
+            style={mergedStyles.value.image}
           >
             {imageNode}
           </div>
@@ -104,10 +121,9 @@ const Empty = defineComponent<
             <div
               class={classNames(
                 `${prefixCls.value}-description`,
-                contextClassNames?.description,
-                emptyClassNames?.description,
+                mergedClassNames.value.description,
               )}
-              style={[contextStyles?.description, emptyStyles?.description]}
+              style={mergedStyles.value.description}
             >
               {des}
             </div>
@@ -116,10 +132,9 @@ const Empty = defineComponent<
             <div
               class={classNames(
                 `${prefixCls.value}-footer`,
-                contextClassNames?.footer,
-                emptyClassNames?.footer,
+                mergedClassNames.value.footer,
               )}
-              style={[contextStyles?.footer, emptyStyles?.footer]}
+              style={mergedStyles.value.footer}
             >
               {children}
             </div>

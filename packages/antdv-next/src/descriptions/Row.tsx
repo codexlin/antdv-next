@@ -34,7 +34,7 @@ function renderCells(
       style,
     } = item
     let label = getSlotPropsFnRun({}, item, 'label')
-    let children = getSlotPropsFnRun({}, item, 'children')
+    let children = getSlotPropsFnRun({}, item, 'content')
 
     const className = item.class
     if (labelRender) {

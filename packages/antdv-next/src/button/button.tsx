@@ -139,18 +139,6 @@ const InternalCompoundedButton = defineComponent<
       ...button
     } = useComponentBaseConfig('button', props, ['autoInsertSpace', 'variant', 'shape', 'color'], 'btn')
     const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
-    // =========== Merged Props for Semantic ===========
-    const mergedProps = computed(() => props)
-    // ========================= Style ==========================
-    const [mergedClassNames, mergedStyles] = useMergeSemantic<
-      ButtonClassNamesType,
-      ButtonStylesType,
-      ButtonProps
-    >(
-      useToArr(...(props._skipSemantic ? [] : [contextClassNames, classes])),
-      useToArr(...(props._skipSemantic ? [] : [contextStyles, styles])),
-      useToProps(mergedProps),
-    )
 
     const shape = computed(() => props.shape || button?.shape.value || 'default')
 
@@ -273,7 +261,31 @@ const InternalCompoundedButton = defineComponent<
 
     const sizeClassNameMap = { large: 'lg', small: 'sm', middle: undefined }
     const sizeFullName = useSize<SizeType>(ctxSize => (props?.size ?? compactSize.value ?? ctxSize) as SizeType)
-
+    const mergedIconPlacement = computed(() => props?.iconPlacement ?? 'start')
+    // =========== Merged Props for Semantic ===========
+    const mergedProps = computed(() => {
+      return {
+        ...props,
+        type: mergedType.value,
+        color: mergedColor.value,
+        danger: isDanger.value,
+        shape: shape.value,
+        size: sizeFullName.value,
+        disabled: mergedDisabled.value,
+        loading: innerLoading.value,
+        iconPlacement: mergedIconPlacement.value,
+      }
+    })
+    // ========================= Style ==========================
+    const [mergedClassNames, mergedStyles] = useMergeSemantic<
+      ButtonClassNamesType,
+      ButtonStylesType,
+      ButtonProps
+    >(
+      useToArr(...(props._skipSemantic ? [] : [contextClassNames, classes])),
+      useToArr(...(props._skipSemantic ? [] : [contextStyles, styles])),
+      useToProps(mergedProps),
+    )
     return () => {
       const { loading } = props
       const sizeCls = sizeFullName.value ? (sizeClassNameMap?.[sizeFullName.value] ?? '') : ''
@@ -310,7 +322,7 @@ const InternalCompoundedButton = defineComponent<
           [`${prefixCls.value}-two-chinese-chars`]: hasTwoCNChar.value && mergedInsertSpace.value && !innerLoading.value,
           [`${prefixCls.value}-block`]: props.block,
           [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
-          [`${prefixCls.value}-icon-end`]: props.iconPlacement === 'end',
+          [`${prefixCls.value}-icon-end`]: mergedIconPlacement.value === 'end',
         },
         compactItemClassnames.value,
         (attrs as any).class,
