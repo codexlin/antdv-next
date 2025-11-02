@@ -9,7 +9,6 @@ import type {
   PresetColorKey,
   PresetColorType,
   SeedToken,
-  UseComponentStyleResult,
 } from './interface'
 import { genCalc as calc, useStyleRegister } from '@antdv-next/cssinjs'
 
@@ -54,5 +53,4 @@ export type {
   PresetColorKey,
   PresetColorType,
   SeedToken,
-  UseComponentStyleResult,
 }

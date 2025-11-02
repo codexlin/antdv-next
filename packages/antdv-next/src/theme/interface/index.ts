@@ -1,5 +1,4 @@
 import type { CSSInterpolation, DerivativeFunc } from '@antdv-next/cssinjs'
-import type { VNodeChild } from 'vue'
 import type { AnyObject } from '../../_util/type'
 import type { AliasToken } from './alias'
 import type { MapToken } from './maps'
@@ -41,8 +40,6 @@ export type GenerateStyle<
   ComponentToken extends AnyObject = AliasToken,
   ReturnType = CSSInterpolation,
 > = (token: ComponentToken) => ReturnType
-
-export type UseComponentStyleResult = [(node: VNodeChild) => VNodeChild, string]
 
 export type {
   AliasToken,

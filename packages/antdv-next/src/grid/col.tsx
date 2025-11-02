@@ -56,7 +56,7 @@ const Col = defineComponent<ColProps>(
 
     const prefixCls = computed(() => configCtx.value?.getPrefixCls('col', props.prefixCls))
 
-    const [wrapCSSVar, hashId, cssVarCls] = useColStyle(prefixCls)
+    const [hashId, cssVarCls] = useColStyle(prefixCls)
 
     return () => {
       const { span, order, offset, push, pull, flex } = props
@@ -127,14 +127,14 @@ const Col = defineComponent<ColProps>(
 
       // ==================== Render =====================
 
-      return wrapCSSVar(
+      return (
         <div
           {...attrs}
           class={classes}
           style={[mergedStyle, (attrs as any).style, sizeStyle]}
         >
           {slots.default?.()}
-        </div>,
+        </div>
       )
     }
   },

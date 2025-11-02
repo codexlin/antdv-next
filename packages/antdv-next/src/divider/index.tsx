@@ -1,13 +1,11 @@
 import type { App, CSSProperties } from 'vue'
-import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks/useMergeSemantic.ts'
-import type { Orientation } from '../_util/hooks/useOrientation.ts'
+import type { Orientation, SemanticClassNamesType, SemanticStylesType } from '../_util/hooks'
 import type { ComponentBaseProps } from '../config-provider/context.ts'
 import type { SizeType } from '../config-provider/SizeContext.tsx'
 import { classNames } from '@v-c/util'
 import { filterEmpty } from '@v-c/util/dist/props-util'
 import { computed, defineComponent } from 'vue'
-import { pureAttrs, useMergeSemantic, useToArr } from '../_util/hooks/useMergeSemantic.ts'
-import { useOrientation } from '../_util/hooks/useOrientation.ts'
+import { pureAttrs, useMergeSemantic, useOrientation, useToArr } from '../_util/hooks'
 import { toPropsRefs } from '../_util/tools.ts'
 import { useComponentBaseConfig } from '../config-provider/context.ts'
 import { useSize } from '../config-provider/hooks/useSize.ts'
@@ -68,7 +66,7 @@ const Divider = defineComponent<DividerProps>(
       prefixCls,
     } = useComponentBaseConfig('divider', props)
     const { type, vertical, orientation, classes, styles, size } = toPropsRefs(props, 'orientation', 'vertical', 'type', 'classes', 'styles', 'size')
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const sizeFullName = useSize(size)
     const sizeCls = computed(() => sizeClassNameMap[sizeFullName.value!])
     const validTitlePlacement = computed(() => titlePlacementList.includes(orientation.value || ''))
@@ -152,7 +150,7 @@ const Divider = defineComponent<DividerProps>(
         marginInlineStart: hasMarginStart.value ? memoizedOrientationMargin.value : undefined,
         marginInlineEnd: hasMarginEnd.value ? memoizedOrientationMargin.value : undefined,
       }
-      return wrapCSSVar(
+      return (
         <div
           class={classString}
           style={[
@@ -186,7 +184,7 @@ const Divider = defineComponent<DividerProps>(
               />
             </>
           )}
-        </div>,
+        </div>
       )
     }
   },

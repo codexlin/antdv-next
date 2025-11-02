@@ -107,7 +107,7 @@ const Skeleton = defineComponent<SkeletonProps, EmptyEmit, string, SlotsType<Ske
       classes: contextClassNames,
       styles: contextStyles,
     } = useComponentBaseConfig('skeleton', props)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
 
     // =========== Merged Props for Semantic ==========
@@ -227,7 +227,7 @@ const Skeleton = defineComponent<SkeletonProps, EmptyEmit, string, SlotsType<Ske
           cssVarCls.value,
         )
 
-        return wrapCSSVar(
+        return (
           <div
             class={cls}
             {...omit(attrs, ['class', 'style'])}
@@ -235,7 +235,7 @@ const Skeleton = defineComponent<SkeletonProps, EmptyEmit, string, SlotsType<Ske
           >
             {avatarNode}
             {contentNode}
-          </div>,
+          </div>
         )
       }
       return slots.default?.() ?? null

@@ -18,7 +18,7 @@ const defaults = {
 const SkeletonInput = defineComponent<SkeletonInputProps>(
   (props = defaults, { attrs }) => {
     const { prefixCls } = useBaseConfig('skeleton', props)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const { active, rootClass, block, size } = props
@@ -35,14 +35,14 @@ const SkeletonInput = defineComponent<SkeletonInputProps>(
         cssVarCls.value,
       )
       const otherProps = omit(props, ['prefixCls'])
-      return wrapCSSVar(
+      return (
         <div class={cls} {...omit(attrs, ['class'])}>
           <Element
             prefixCls={`${prefixCls.value}-input`}
             size={size}
             {...otherProps}
           />
-        </div>,
+        </div>
       )
     }
   },

@@ -92,7 +92,7 @@ const InternalBadge = defineComponent<
 
     const badgeRef = shallowRef<HTMLSpanElement>()
     expose({ badgeRef })
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     const numberedDisplayCount = computed(() => {
       const { count, overflowCount } = props
@@ -222,7 +222,7 @@ const InternalBadge = defineComponent<
 
       if (!children.length && hasStatus.value && (showStatusTextNode || hasStatusValue.value || !ignoreCount.value)) {
         const statusTextColor = mergedStyle.value?.color
-        return wrapCSSVar(
+        return (
           <span
             {...restAttrs}
             ref={badgeRef}
@@ -234,7 +234,7 @@ const InternalBadge = defineComponent<
               style={[mergedStyles.value.indicator, statusStyle]}
             />
             {renderStatusText({ color: statusTextColor })}
-          </span>,
+          </span>
         )
       }
 
@@ -262,7 +262,7 @@ const InternalBadge = defineComponent<
       if (props.color && !isInternalColor.value) {
         scrollNumberStyle.background = props.color
       }
-      return wrapCSSVar(
+      return (
         <span
           {...restAttrs}
           ref={badgeRef}
@@ -294,7 +294,7 @@ const InternalBadge = defineComponent<
             }}
           </Transition>
           {renderStatusText()}
-        </span>,
+        </span>
       )
     }
   },

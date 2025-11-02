@@ -111,7 +111,7 @@ const Sider = defineComponent<
   // =========================== Prefix ===========================
   const { prefixCls, direction } = useBaseConfig('layout-sider', props)
 
-  const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+  const [hashId, cssVarCls] = useStyle(prefixCls)
 
   // ========================= Responsive =========================
   const responsiveHandler: (mql: MediaQueryListEvent | MediaQueryList) => void = (mql) => {
@@ -223,11 +223,11 @@ const Sider = defineComponent<
       cssVarCls.value,
     )
 
-    return wrapCSSVar(
+    return (
       <aside class={siderCls} {...omit(attrs, ['style', 'class'])} style={[(attrs as any).style, divStyle]}>
         <div class={`${prefixCls.value}-children`}>{slots?.default?.()}</div>
         {collapsible || (below.value && zeroWidthTrigger) ? triggerDom : null}
-      </aside>,
+      </aside>
     )
   }
 }, {

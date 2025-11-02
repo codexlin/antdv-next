@@ -101,7 +101,7 @@ const Collapse = defineComponent<
     const { styles, classes } = toPropsRefs(props, 'styles', 'classes')
     const mergedSize = useSize<SizeType>(ctxSize => props?.size ?? ctxSize ?? 'middle')
     const rootPrefixCls = getPrefixCls()
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const mergedPlacement = computed(() => props.expandIconPlacement ?? 'start')
     const mergedProps = computed(() => props)
     const [mergedClassNames, mergedStyles] = useMergeSemantic<
@@ -172,7 +172,7 @@ const Collapse = defineComponent<
         }
         return _item
       })
-      return wrapCSSVar(
+      return (
         <VcCollapse
           openMotion={openMotion.value}
           {...omit(attrs, ['class', 'style'])}
@@ -186,7 +186,7 @@ const Collapse = defineComponent<
           onChange={key => emit('change', key)}
           destroyOnHidden={destroyOnHidden}
           items={items}
-        />,
+        />
       )
     }
   },

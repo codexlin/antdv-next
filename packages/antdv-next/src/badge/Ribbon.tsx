@@ -32,7 +32,7 @@ export default defineComponent<
     const configContext = useConfig()
     const prefixCls = computed(() => configContext.value.getPrefixCls('ribbon', props.prefixCls))
     const wrapperCls = computed(() => `${prefixCls.value}-wrapper`)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls, wrapperCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls, wrapperCls)
 
     return () => {
       const placement = props.placement ?? 'end'
@@ -48,7 +48,7 @@ export default defineComponent<
       const textNodes = getSlotPropsFnRun(slots, props, 'text')
       const children = slots.default?.()
 
-      return wrapCSSVar(
+      return (
         <div
           class={classNames(wrapperCls.value, props.rootClass, hashId.value, cssVarCls.value)}
         >
@@ -72,7 +72,7 @@ export default defineComponent<
             </span>
             <div class={`${prefixCls.value}-corner`} style={cornerColorStyle} />
           </div>
-        </div>,
+        </div>
       )
     }
   },

@@ -172,7 +172,7 @@ const InternalCompoundedButton = defineComponent<
     const mergedInsertSpace = computed(() => {
       return props?.autoInsertSpace ?? button.autoInsertSpace?.value ?? true
     })
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const disabled = useDisabledContext()
     const mergedDisabled = computed(() => {
       return props?.disabled ?? disabled.value
@@ -382,7 +382,7 @@ const InternalCompoundedButton = defineComponent<
       const htmlType = props.htmlType ?? 'button'
 
       if (mergedHref !== undefined) {
-        return wrapCSSVar(
+        return (
           <a
             {...omit(attrs, ['class', 'style'])}
             ref={buttonRef as any}
@@ -394,7 +394,7 @@ const InternalCompoundedButton = defineComponent<
           >
             {iconNode}
             {kids}
-          </a>,
+          </a>
         )
       }
 
@@ -416,7 +416,7 @@ const InternalCompoundedButton = defineComponent<
       if (!isUnBorderedButtonVariant(mergedVariant.value)) {
         buttonNodes = <Wave component="Button" disabled={innerLoading.value}>{buttonNodes}</Wave>
       }
-      return wrapCSSVar(buttonNodes)
+      return buttonNodes
     }
   },
   {

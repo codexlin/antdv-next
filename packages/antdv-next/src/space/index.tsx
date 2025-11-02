@@ -83,7 +83,7 @@ const InternalSpace = defineComponent<
     const isValidVerticalSize = computed(() => isValidGapNumber(sizes.value?.[1]))
     const isValidHorizontalSize = computed(() => isValidGapNumber(sizes.value?.[0]))
     const mergedAlign = computed(() => align.value === undefined && !mergedVertical.value ? 'center' : align.value)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     // =========== Merged Props for Semantic ==========
     const mergedProps = computed(() => {
@@ -170,14 +170,14 @@ const InternalSpace = defineComponent<
       if (!isPresetVerticalSize.value && isValidVerticalSize.value) {
         gapStyle.rowGap = typeof verticalSize === 'number' ? `${verticalSize}px` : verticalSize
       }
-      return wrapCSSVar(
+      return (
         <div
           class={cls}
           style={[gapStyle, mergedStyles.value.root, contextStyle.value, (attrs as any).style]}
           {...pureAttrs(attrs)}
         >
           {nodes}
-        </div>,
+        </div>
       )
     }
   },

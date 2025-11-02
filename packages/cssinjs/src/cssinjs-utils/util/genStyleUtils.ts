@@ -9,9 +9,8 @@ import type {
   GlobalTokenWithComponent,
   TokenMap,
   TokenMapKey,
-  UseComponentStyleResult,
 } from '../interface'
-import { computed, createVNode, defineComponent, Fragment } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import { genCalc, token2CSSVar, useCSSVarRegister, useStyleRegister } from '../../index'
 import useUniqueMemo from '../_util/hooks/useUniqueMemo'
@@ -193,10 +192,10 @@ function genStyleUtils<
     const useCSSVar = genCSSVarRegister(componentName, getDefaultToken, mergedOptions)
 
     return (prefixCls: Ref<string>, rootCls: Ref<string | undefined> = prefixCls) => {
-      const [, hashId] = useStyle(prefixCls, rootCls)
-      const [wrapCSSVar, cssVarCls] = useCSSVar(rootCls)
+      const hashId = useStyle(prefixCls, rootCls)
+      const cssVarCls = useCSSVar(rootCls)
 
-      return [wrapCSSVar, hashId, cssVarCls] as const
+      return [hashId, cssVarCls] as const
     }
   }
 
@@ -214,75 +213,47 @@ function genStyleUtils<
       prefixToken: (key: string) => string
     },
   ) {
-    const { unitless: compUnitless, injectStyle = true, prefixToken, ignore } = options
-    const CSSVarRegister = defineComponent({
-      props: {
-        rootCls: String,
-        component: String,
-        cssVar: {
-          type: Object as () => { prefix?: string, key?: string },
-          default: () => ({}),
-        },
-      },
-      setup(props) {
-        const { realToken } = useToken()
-        useCSSVarRegister(
-          computed(() => {
-            const { cssVar, rootCls } = props
-            return {
-              path: [component as unknown as string],
-              prefix: cssVar.prefix,
-              key: cssVar.key!,
-              unitless: compUnitless,
-              ignore,
-              token: realToken?.value,
-              scope: rootCls,
-            } as any
-          }),
-          () => {
-            const defaultToken = getDefaultComponentToken<CompTokenMap, AliasToken, C>(
-              component,
-              realToken!.value!,
-              getDefaultToken as any,
-            )
-
-            const componentToken = getComponentToken<CompTokenMap, AliasToken, C>(
-              component,
-              realToken!.value!,
-              defaultToken as any,
-              {
-                deprecatedTokens: options?.deprecatedTokens,
-              },
-            )
-
+    const { unitless: compUnitless, prefixToken, ignore } = options
+    return (rootCls: Ref<string | undefined>) => {
+      const { cssVar, realToken } = useToken()
+      useCSSVarRegister(
+        computed(() => {
+          const _cssVar = cssVar!.value!
+          return {
+            path: [component],
+            prefix: _cssVar?.prefix,
+            key: _cssVar.key,
+            unitless: compUnitless,
+            ignore,
+            token: realToken?.value,
+            scope: rootCls.value,
+          } as any
+        }),
+        () => {
+          const defaultToken = getDefaultComponentToken<CompTokenMap, AliasToken, C>(
+            component,
+            realToken!.value!,
+            getDefaultToken as any,
+          )
+          const componentToken = getComponentToken<CompTokenMap, AliasToken, C>(
+            component,
+            realToken!.value!,
+            defaultToken as any,
+            {
+              deprecatedTokens: options?.deprecatedTokens,
+            },
+          )
+          if (defaultToken) {
             Object.keys(defaultToken).forEach((key) => {
               componentToken[prefixToken(key)] = componentToken[key]
               delete componentToken[key]
             })
-            return componentToken
-          },
-        )
-        return () => {
-          return null
-        }
-      },
-    })
-
-    return (rootCls: Ref<string | undefined>) => {
-      const { cssVar } = useToken()
-      return [
-        (node: any) => {
-          return injectStyle && cssVar?.value
-            ? (
-                createVNode(Fragment, null, [
-                  createVNode(CSSVarRegister, { rootCls: rootCls.value, cssVar: cssVar.value, component }),
-                  node,
-                ])
-              )
-            : node
+          }
+          return componentToken
         },
-        computed(() => cssVar?.value?.key),
-      ] as const
+      )
+
+      return computed(() => cssVar?.value?.key)
     }
   }
 
@@ -322,8 +293,16 @@ function genStyleUtils<
     }
 
     // Return new style hook
-    return (prefixCls: Ref<string>, rootCls?: Ref<string | undefined>): UseComponentStyleResult => {
-      const { theme, realToken, hashId, token, cssVar } = useToken()
+    return (prefixCls: Ref<string>, rootCls?: Ref<string | undefined>) => {
+      const { theme, realToken, hashId, token, cssVar, zeroRuntime } = useToken()
+
+      // Update of `disabledRuntimeStyle` would cause React hook error, so memoized it and never update.
+      const mergedZeroRuntime = computed(() => {
+        return zeroRuntime?.value
+      })
+      if (mergedZeroRuntime.value) {
+        return hashId!
+      }
 
       const prefix = usePrefix()
       const csp = useCSP()
@@ -385,7 +364,7 @@ function genStyleUtils<
           ),
         )
       }
-      const wrapSSR = useStyleRegister(
+      useStyleRegister(
         computed(() => {
           return {
             ...sharedConfig.value,
@@ -450,7 +429,7 @@ function genStyleUtils<
         },
       )
 
-      return [wrapSSR, hashId!]
+      return hashId!
     }
   }
 

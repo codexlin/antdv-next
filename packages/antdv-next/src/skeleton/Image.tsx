@@ -12,7 +12,7 @@ const path
 const SkeletonImage = defineComponent<SkeletonImageProps>(
   (props, { attrs }) => {
     const { prefixCls } = useBaseConfig('skeleton', props)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const { active, rootClass } = props
@@ -28,7 +28,7 @@ const SkeletonImage = defineComponent<SkeletonImageProps>(
         cssVarCls.value,
       )
 
-      return wrapCSSVar(
+      return (
         <div class={cls}>
           <div
             class={classNames(`${prefixCls.value}-image`, (attrs as any)?.class)}
@@ -43,7 +43,7 @@ const SkeletonImage = defineComponent<SkeletonImageProps>(
               <path d={path} class={`${prefixCls.value}-image-path`} />
             </svg>
           </div>
-        </div>,
+        </div>
       )
     }
   },

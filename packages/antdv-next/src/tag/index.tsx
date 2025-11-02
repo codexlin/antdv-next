@@ -78,7 +78,7 @@ const InternalTag = defineComponent<
       styles: contextStyles,
     } = useComponentBaseConfig('tag', props, ['variant'])
     const { variant, href, target, disabled: customDisabled, color, bordered, classes, styles } = toPropsRefs(props, 'classes', 'styles', 'variant', 'href', 'target', 'disabled', 'color', 'bordered')
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     // ====================== Colors ======================
     const [mergedVariant, mergedColor, isPreset, isStatus, customTagStyle] = useColor(
@@ -222,7 +222,7 @@ const InternalTag = defineComponent<
           {isStatus.value && <StatusCmp key="status" prefixCls={prefixCls.value} />}
         </TagWrapper>
       )
-      return wrapCSSVar(isNeedWave ? <Wave component="Tag">{tagNode}</Wave> : tagNode)
+      return isNeedWave ? <Wave component="Tag">{tagNode}</Wave> : tagNode
     }
   },
   {

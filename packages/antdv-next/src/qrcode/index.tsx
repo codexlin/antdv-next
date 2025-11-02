@@ -2,7 +2,6 @@ import type { App, CSSProperties, SlotsType } from 'vue'
 import type {
   ImageSettings,
   QRCodeClassNamesType,
-
   QRCodeEmits,
   QRCodeProps,
   QRCodeSlots,
@@ -52,7 +51,7 @@ const QRCode = defineComponent<
       styles: contextStyles,
     } = useComponentBaseConfig('qrcode', props)
     const { styles, classes } = toPropsRefs(props, 'styles', 'classes')
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const [locale] = useLocale('QRCode')
     const [,token] = useToken()
     const color = computed(() => props.color ?? token.value.colorText)
@@ -158,7 +157,7 @@ const QRCode = defineComponent<
         width: _width,
         height: _height,
       }
-      return wrapCSSVar(
+      return (
         <div {...restProps} class={mergedCls} style={rootStyle}>
           {status !== 'active' && (
             <div
@@ -177,7 +176,7 @@ const QRCode = defineComponent<
             </div>
           )}
           {type === 'canvas' ? <QRCodeCanvas {...qrCodeProps as any} /> : <QRCodeSVG {...qrCodeProps as any} />}
-        </div>,
+        </div>
       )
     }
   },

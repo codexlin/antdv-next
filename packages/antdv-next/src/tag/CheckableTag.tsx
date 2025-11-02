@@ -56,7 +56,7 @@ const CheckableTag = defineComponent<
       emit('update:checked', checked)
       emit('click', e)
     }
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const tag = configCtx.value.tag
@@ -75,7 +75,7 @@ const CheckableTag = defineComponent<
       )
       const icon = getSlotPropsFnRun(slots, props, 'icon')
 
-      return wrapCSSVar(
+      return (
         <span
           {...pureAttrs(attrs)}
           style={[tag?.style, (attrs as any).style]}
@@ -84,7 +84,7 @@ const CheckableTag = defineComponent<
         >
           {icon}
           <span>{slots?.default?.()}</span>
-        </span>,
+        </span>
       )
     }
   },

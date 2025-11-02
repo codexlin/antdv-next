@@ -1,6 +1,6 @@
 import type { Key } from '@v-c/util/dist/type'
 import type { App, SlotsType, VNodeChild } from 'vue'
-import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks/useMergeSemantic.ts'
+import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks'
 import type { SlotsDefineType } from '../_util/type.ts'
 import type { AffixProps } from '../affix'
 import type { ComponentBaseProps } from '../config-provider/context'
@@ -15,7 +15,7 @@ import {
   useMergeSemantic,
   useToArr,
   useToProps,
-} from '../_util/hooks/useMergeSemantic.ts'
+} from '../_util/hooks'
 import scrollTo from '../_util/scrollTo'
 import { clsx, toPropsRefs } from '../_util/tools.ts'
 import { Affix } from '../affix'
@@ -137,7 +137,7 @@ const Anchor = defineComponent<
     } = useComponentBaseConfig('anchor', props)
     const { direction: anchorDirection, classes, styles } = toPropsRefs(props, 'direction', 'classes', 'styles')
     const rootCls = useCSSVarCls(prefixCls)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls, rootCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls, rootCls)
 
     const getCurrentContainer = () => props?.getContainer?.() ?? getTargetContainer?.() ?? getDefaultContainer?.()
 
@@ -377,7 +377,7 @@ const Anchor = defineComponent<
       )
       const affixProps = affix && typeof affix === 'object' ? affix : undefined
 
-      return wrapCSSVar(
+      return (
         <>
           {affix
             ? (
@@ -386,7 +386,7 @@ const Anchor = defineComponent<
                 </Affix>
               )
             : anchorContent}
-        </>,
+        </>
       )
     }
   },

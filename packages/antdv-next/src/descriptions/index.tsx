@@ -109,7 +109,7 @@ const Descriptions = defineComponent<
 
     const mergedSize = useSize(customizeSize)
     const rows = useRow(mergedColumn, mergedItems)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     // =========== Merged Props for Semantic ==========
     const mergedProps = computed(() => {
       return {
@@ -149,7 +149,7 @@ const Descriptions = defineComponent<
       const extra = getSlotPropsFnRun(slots, props, 'extra')
       const labelRender = slots?.labelRender ?? props?.labelRender
       const contentRender = slots?.contentRender ?? props?.contentRender
-      return wrapCSSVar(
+      return (
         <div
           class={classNames(
             prefixCls.value,
@@ -222,7 +222,7 @@ const Descriptions = defineComponent<
               </tbody>
             </table>
           </div>
-        </div>,
+        </div>
       )
     }
   },

@@ -6,7 +6,6 @@ export type {
   OverrideTokenMap,
   TokenMap,
   TokenMapKey,
-  UseComponentStyleResult,
 } from './interface'
 
 export type {

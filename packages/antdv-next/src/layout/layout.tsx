@@ -51,7 +51,7 @@ function generator({ suffixCls, tagName, displayName }: GeneratorProps) {
 const Basic = defineComponent<BasicPropsWithTagName>(
   (props = basicDefaultProps, { attrs, slots }) => {
     const { prefixCls } = useBaseConfig('layout', props)
-    const [wrapSSR, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const {
@@ -61,7 +61,7 @@ const Basic = defineComponent<BasicPropsWithTagName>(
       } = props
       const prefixWithSuffixCls = suffixCls ? `${prefixCls.value}-${suffixCls}` : prefixCls.value
 
-      return wrapSSR(createVNode(tagName, {
+      return createVNode(tagName, {
         ...attrs,
         class: classNames(
           customizePrefixCls || prefixWithSuffixCls,
@@ -69,7 +69,7 @@ const Basic = defineComponent<BasicPropsWithTagName>(
           hashId.value,
           cssVarCls.value,
         ),
-      }, slots))
+      }, slots)
     }
   },
 )
@@ -79,7 +79,7 @@ const BasicLayout = defineComponent<BasicPropsWithTagName>(
     const { direction, prefixCls } = useBaseConfig('layout', props)
     const compCtx = useComponentConfig('layout')
     const siders = ref<string[]>([])
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const addSider = (id: string) => {
       siders.value = [...siders.value, id]
     }
@@ -118,16 +118,14 @@ const BasicLayout = defineComponent<BasicPropsWithTagName>(
         cssVarCls.value,
       )
 
-      return wrapCSSVar(
-        createVNode(tagName, {
-          ...attrs,
-          suffixCls,
-          class: classString,
-          style: [compCtx.value.style, (attrs as any).style],
-        }, {
-          default: () => children,
-        }),
-      )
+      return createVNode(tagName, {
+        ...attrs,
+        suffixCls,
+        class: classString,
+        style: [compCtx.value.style, (attrs as any).style],
+      }, {
+        default: () => children,
+      })
     }
   },
 )

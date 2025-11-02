@@ -85,7 +85,7 @@ const Spin = defineComponent<
       classes: contextClassNames,
       styles: contextStyles,
     } = useComponentBaseConfig('spin', props, ['indicator'])
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
     const spinning = shallowRef(shouldDelay(props.spinning, props.delay) ? false : !!props.spinning)
     const mergedPercent = usePercent(spinning, computed(() => props.percent))
@@ -185,7 +185,7 @@ const Spin = defineComponent<
         </div>
       )
       if (isNestedPattern) {
-        return wrapCSSVar(
+        return (
           <div
             {...pureAttrs(attrs)}
             class={classNames(
@@ -201,11 +201,11 @@ const Spin = defineComponent<
             <div class={containerClassName} key="container">
               {children}
             </div>
-          </div>,
+          </div>
         )
       }
       if (fullscreen) {
-        return wrapCSSVar(
+        return (
           <div
             class={classNames(
               `${prefixCls.value}-fullscreen`,
@@ -220,10 +220,10 @@ const Spin = defineComponent<
             style={mergedStyles.value.mask}
           >
             {spinElement}
-          </div>,
+          </div>
         )
       }
-      return wrapCSSVar(spinElement)
+      return spinElement
     }
   },
   {

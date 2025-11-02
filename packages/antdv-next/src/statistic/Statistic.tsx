@@ -75,7 +75,7 @@ const Statistic = defineComponent<
       styles: contextStyles,
     } = useComponentBaseConfig('statistic', props)
     const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const internalRef = shallowRef<HTMLDivElement>()
     // =========== Merged Props for Semantic ===========
     const mergedProps = computed(() => props)
@@ -146,7 +146,7 @@ const Statistic = defineComponent<
       const prefixClassNames = clsx(`${prefixCls.value}-content-prefix`, mergedClassNames.value.prefix)
 
       const suffixClassNames = clsx(`${prefixCls.value}-content-suffix`, mergedClassNames.value.suffix)
-      return wrapCSSVar(
+      return (
         <div
           {...restProps}
           ref={internalRef}
@@ -184,7 +184,7 @@ const Statistic = defineComponent<
               )}
             </div>
           </Skeleton>
-        </div>,
+        </div>
       )
     }
   },

@@ -18,7 +18,7 @@ const defaults = {
 const SkeletonAvatar = defineComponent<SkeletonAvatarProps>(
   (props = defaults, { attrs }) => {
     const { prefixCls } = useBaseConfig('skeleton', props)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const { active, rootClass, shape, size } = props
@@ -34,7 +34,7 @@ const SkeletonAvatar = defineComponent<SkeletonAvatarProps>(
         cssVarCls.value,
       )
       const otherProps = omit(props, ['prefixCls'])
-      return wrapCSSVar(
+      return (
         <div class={cls} {...omit(attrs, ['class'])}>
           <Element
             prefixCls={`${prefixCls.value}-avatar`}
@@ -42,7 +42,7 @@ const SkeletonAvatar = defineComponent<SkeletonAvatarProps>(
             size={size}
             {...otherProps}
           />
-        </div>,
+        </div>
       )
     }
   },

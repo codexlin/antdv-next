@@ -62,7 +62,7 @@ const CheckableTagGroup = defineComponent<
   const { prefixCls, direction } = useComponentBaseConfig('tag', props)
   const groupPrefixCls = computed(() => `${prefixCls.value}-checkable-group`)
   const rootCls = useCSSVarCls(prefixCls)
-  const [wrapperCssvar, hashId, cssVarCls] = useStyle(prefixCls, rootCls)
+  const [hashId, cssVarCls] = useStyle(prefixCls, rootCls)
 
   const mergedClassNames = computed(() => props.classes || {})
   const mergedStyles = computed(() => props.styles || {})
@@ -117,7 +117,7 @@ const CheckableTagGroup = defineComponent<
     })
     // =============================== Render ===============================
 
-    return wrapperCssvar(
+    return (
       <div
         {...ariaProps}
         class={clsx(
@@ -153,7 +153,7 @@ const CheckableTagGroup = defineComponent<
             </CheckableTag>
           )
         })}
-      </div>,
+      </div>
     )
   }
 }, {

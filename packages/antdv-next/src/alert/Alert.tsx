@@ -152,7 +152,7 @@ const Alert = defineComponent<
     const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
     const closed = shallowRef(false)
     const internalRef = shallowRef<HTMLDivElement>()
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const handleClose = (e?: MouseEvent) => {
       closed.value = true
       emit('close', e)
@@ -262,7 +262,7 @@ const Alert = defineComponent<
         return {}
       }
       const mergedAriaProps = mergedAriaPropsFn()
-      return wrapCSSVar(
+      return (
         <Transition
           name={`${prefixCls.value}-motion`}
           appear={false}
@@ -344,7 +344,7 @@ const Alert = defineComponent<
                 </div>
               )
             : null }
-        </Transition>,
+        </Transition>
 
       )
     }

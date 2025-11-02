@@ -17,7 +17,7 @@ const defaults = {
 const SkeletonButton = defineComponent<SkeletonButtonProps>(
   (props = defaults, { attrs }) => {
     const { prefixCls } = useBaseConfig('skeleton', props)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const { active, rootClass, block, size } = props
@@ -34,14 +34,14 @@ const SkeletonButton = defineComponent<SkeletonButtonProps>(
         cssVarCls.value,
       )
       const otherProps = omit(props, ['prefixCls'])
-      return wrapCSSVar(
+      return (
         <div class={cls} {...omit(attrs, ['class'])}>
           <Element
             prefixCls={`${prefixCls.value}-button`}
             size={size}
             {...otherProps}
           />
-        </div>,
+        </div>
       )
     }
   },

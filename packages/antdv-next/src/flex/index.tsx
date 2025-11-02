@@ -20,7 +20,7 @@ const Flex = defineComponent<FlexProps, EmptyEmit, string, SlotsType<FlexSlots>>
   (props = defaultFlexProps, { slots, attrs }) => {
     const configCtx = useConfig()
     const prefixCls = computed(() => configCtx.value.getPrefixCls('flex', props.prefixCls))
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const {
@@ -55,7 +55,7 @@ const Flex = defineComponent<FlexProps, EmptyEmit, string, SlotsType<FlexSlots>>
         mergedStyle.gap = gap
       }
 
-      return wrapCSSVar(createVNode(
+      return createVNode(
         component,
         {
           class: [mergedCls, attrs.class],
@@ -65,7 +65,7 @@ const Flex = defineComponent<FlexProps, EmptyEmit, string, SlotsType<FlexSlots>>
         {
           default: slots.default,
         },
-      ))
+      )
     }
   },
   {

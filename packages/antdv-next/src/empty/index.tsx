@@ -61,7 +61,7 @@ const Empty = defineComponent<
       styles: contextStyles,
     } = useComponentBaseConfig('empty', props)
     const { classes, styles } = toPropsRefs(props, 'classes', 'styles')
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const [mergedClassNames, mergedStyles] = useMergeSemantic<
       EmptyClassNamesType,
       EmptyStylesType,
@@ -86,7 +86,7 @@ const Empty = defineComponent<
         imageNode = mergedImage
       }
       const children = filterEmpty(slots?.default?.() ?? [])
-      return wrapCSSVar(
+      return (
         <div
           class={classNames(
             hashId.value,
@@ -139,7 +139,7 @@ const Empty = defineComponent<
               {children}
             </div>
           )}
-        </div>,
+        </div>
       )
     }
   },

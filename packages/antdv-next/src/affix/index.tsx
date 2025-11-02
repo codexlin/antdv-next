@@ -248,7 +248,7 @@ export const Affix = defineComponent<InternalAffixProps, AffixEmits, string>(
       updatePosition()
     })
 
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(affixPrefixCls)
+    const [hashId, cssVarCls] = useStyle(affixPrefixCls)
 
     useResizeObserver(placeholderNodeRef, () => {
       updatePosition()
@@ -282,13 +282,13 @@ export const Affix = defineComponent<InternalAffixProps, AffixEmits, string>(
           },
         })
       }
-      return wrapCSSVar(
+      return (
         <div {...attrs} ref={placeholderNodeRef}>
           {affixStyle.value && <div style={placeholderStyle.value} aria-hidden="true" />}
           <div class={mergedCls} ref={fixedNodeRef} style={affixStyle.value}>
             {childNode}
           </div>
-        </div>,
+        </div>
       )
     }
   },

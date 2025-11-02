@@ -17,7 +17,7 @@ export interface SkeletonNodeSlots {
 const SkeletonNode = defineComponent<SkeletonNodeProps, EmptyEmit, string, SlotsType<SkeletonNodeSlots>>(
   (props, { attrs, slots }) => {
     const { prefixCls } = useBaseConfig('skeleton', props)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
 
     return () => {
       const { active, rootClass } = props
@@ -33,7 +33,7 @@ const SkeletonNode = defineComponent<SkeletonNodeProps, EmptyEmit, string, Slots
         cssVarCls.value,
       )
 
-      return wrapCSSVar(
+      return (
         <div class={cls}>
           <div
             class={classNames(`${prefixCls.value}-image`, (attrs as any)?.class)}
@@ -41,7 +41,7 @@ const SkeletonNode = defineComponent<SkeletonNodeProps, EmptyEmit, string, Slots
           >
             {slots.default?.()}
           </div>
-        </div>,
+        </div>
       )
     }
   },

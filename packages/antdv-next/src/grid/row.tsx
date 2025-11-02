@@ -88,7 +88,7 @@ const Row = defineComponent<RowProps>(
     const mergedAlign = useMergedPropByScreen(computed(() => props.align), screens)
     const mergedJustify = useMergedPropByScreen(computed(() => props.justify), screens)
     const prefixCls = computed(() => configCtx.value?.getPrefixCls('row', props.prefixCls))
-    const [wrapCSSVar, hashId, cssVarCls] = useRowStyle(prefixCls)
+    const [hashId, cssVarCls] = useRowStyle(prefixCls)
 
     const gutters = useGutter(computed(() => props.gutter), screens)
 
@@ -123,10 +123,10 @@ const Row = defineComponent<RowProps>(
       const [_, gutterV] = gutters.value
       rowStyle.rowGap = gutterV
 
-      return wrapCSSVar(
+      return (
         <div {...omit(attrs, ['class', 'style'])} class={classes} style={[rowStyle, (attrs as any).style]}>
           {slots?.default?.()}
-        </div>,
+        </div>
       )
     }
   },

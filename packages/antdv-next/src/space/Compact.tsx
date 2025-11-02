@@ -76,7 +76,7 @@ const Compact = defineComponent<SpaceCompactProps>(
     const mergedSize = useSize<SizeType>(ctx => (props?.size ?? ctx) as SizeType)
     const configContext = useConfig()
     const prefixCls = computed(() => configContext.value?.getPrefixCls?.('space-compact', props.prefixCls))
-    const [wrapCSSVar, hashId] = useStyle(prefixCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls)
     const compactItemContext = useSpaceCompactItemContext()
     return () => {
       const { rootClass, direction, block } = props
@@ -84,6 +84,7 @@ const Compact = defineComponent<SpaceCompactProps>(
       const clx = classNames(
         prefixCls.value,
         hashId.value,
+        cssVarCls.value,
         {
           [`${prefixCls}-rtl`]: directionConfig === 'rtl',
           [`${prefixCls}-block`]: block,
@@ -115,10 +116,10 @@ const Compact = defineComponent<SpaceCompactProps>(
         return null
       }
 
-      return wrapCSSVar(
+      return (
         <div class={clx} {...attrs}>
           {nodes}
-        </div>,
+        </div>
       )
     }
   },

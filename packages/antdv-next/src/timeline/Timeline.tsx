@@ -40,9 +40,9 @@ const Timeline = defineComponent<
 
     // Style
     const rootCls = useCSSVarCls(prefixCls)
-    const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls, rootCls)
+    const [hashId, cssVarCls] = useStyle(prefixCls, rootCls)
     return () => {
-      return wrapCSSVar(
+      return (
         <TimelineItemList
           {...omit(attrs, ['class', 'style'])}
           {...omit(props, ['items', 'prefixCls'])}
@@ -58,7 +58,7 @@ const Timeline = defineComponent<
           items={props.items}
           hashId={hashId.value}
           v-slots={slots}
-        />,
+        />
       )
     }
   },
