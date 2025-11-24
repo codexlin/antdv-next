@@ -1,6 +1,20 @@
+import type { SwitchChangeEventHandler, SwitchClickEventHandler } from '@v-c/switch'
+import type { App, SlotsType } from 'vue'
 import type { SemanticClassNamesType, SemanticStylesType } from '../_util/hooks'
-import type { VueNode } from '../_util/type.ts'
-import type { ComponentBaseProps } from '../config-provider/context.ts'
+import type { VueNode } from '../_util/type'
+import type { ComponentBaseProps } from '../config-provider/context'
+import { LoadingOutlined } from '@antdv-next/icons'
+import VcSwitch from '@v-c/switch'
+import { clsx } from '@v-c/util'
+import { omit } from 'es-toolkit'
+import { computed, defineComponent, shallowRef, watch } from 'vue'
+import { getAttrStyleAndClass, useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
+import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools.ts'
+import Wave from '../_util/wave'
+import { useComponentBaseConfig } from '../config-provider/context'
+import { useDisabledContext } from '../config-provider/DisabledContext.tsx'
+import { useSize } from '../config-provider/hooks/useSize.ts'
+import useStyle from './style'
 
 export type SwitchSize = 'small' | 'default'
 
@@ -37,8 +51,160 @@ export interface SwitchProps extends ComponentBaseProps {
 }
 
 export interface SwitchEmits {
-  // change?:
-  //   click?
+  'change': SwitchChangeEventHandler
+  'click': SwitchClickEventHandler
   'update:checked': (checked: boolean) => void
   'update:value': (checked: boolean) => void
+  [key: string]: (...args: any[]) => any
 }
+
+export interface SwitchSlots {
+  checkedChildren: () => any
+  unCheckedChildren: () => any
+}
+
+const keys = [
+  'prefixCls',
+  'size',
+  'disabled',
+  'loading',
+  'rootClass',
+  'style',
+  'checked',
+  'value',
+  'defaultChecked',
+  'defaultValue',
+  'styles',
+  'classes',
+  'checkedChildren',
+  'unCheckedChildren',
+]
+
+const Switch = defineComponent<
+  SwitchProps,
+  SwitchEmits,
+  string,
+  SlotsType<SwitchSlots>
+>(
+  (props, { slots, emit, attrs }) => {
+    const checked = shallowRef(props?.checked ?? props?.value ?? props?.defaultChecked ?? props?.defaultValue ?? false)
+    watch(
+      [() => props.checked, () => props.value],
+      ([newChecked, newValue]) => {
+        checked.value = newChecked ?? newValue ?? false
+      },
+    )
+    const {
+      prefixCls,
+      direction,
+      class: contextClassName,
+      style: contextStyle,
+      classes: contextClassNames,
+      styles: contextStyles,
+    } = useComponentBaseConfig('switch', props)
+    const { classes, styles, size: customizeSize } = toPropsRefs(props, 'size', 'classes', 'styles')
+    // ===================== Disabled =====================
+    const disabled = useDisabledContext()
+    const mergedDisabled = computed(() => (props.disabled ?? disabled.value) || props.loading)
+    // const formItemContext = useFormItemContext()
+
+    // Style
+    const [hashId, cssVarCls] = useStyle(prefixCls)
+
+    const mergedSize = useSize(customizeSize)
+
+    const mergedProps = computed(() => {
+      return {
+        ...props,
+        size: mergedSize.value,
+        disabled: mergedDisabled.value,
+      } as SwitchProps
+    })
+
+    const [mergedClassNames, mergedStyles] = useMergeSemantic<
+      SwitchClassNamesType,
+      SwitchStylesType,
+      SwitchProps
+    >(useToArr(contextClassNames, classes), useToArr(contextStyles, styles), useToProps(mergedProps))
+
+    const changeHandler: SwitchChangeEventHandler = (...args) => {
+      emit('change', ...args)
+      // emit('update:checked', args[0])
+      // emit('update:value', args[0])
+    }
+    const handleVMHandler = (value: boolean) => {
+      emit('update:checked', value)
+      emit('update:value', value)
+    }
+    return () => {
+      const {
+        loading,
+        rootClass,
+      } = props
+      const checkedChildren = getSlotPropsFnRun(slots, props, 'checkedChildren')
+      const unCheckedChildren = getSlotPropsFnRun(slots, props, 'unCheckedChildren')
+      const { className, style, restAttrs } = getAttrStyleAndClass(attrs)
+      const loadingIcon = (
+        <div class={`${prefixCls.value}-handle`}>
+          {loading && <LoadingOutlined class={`${prefixCls.value}-loading-icon`} />}
+        </div>
+      )
+
+      const classes = clsx(
+        contextClassName.value,
+        {
+          [`${prefixCls.value}-small`]: mergedSize.value === 'small',
+          [`${prefixCls.value}-loading`]: loading,
+          [`${prefixCls.value}-rtl`]: direction.value === 'rtl',
+        },
+        className,
+        rootClass,
+        mergedClassNames.value.root,
+        hashId.value,
+        cssVarCls.value,
+      )
+
+      const mergedStyle: any = {
+        ...mergedStyles.value.root,
+        ...contextStyle.value,
+        ...style,
+      }
+
+      const restProps = omit(props, keys)
+      return (
+        <Wave component="Switch" disabled={mergedDisabled.value}>
+          <VcSwitch
+            {...restAttrs}
+            {...restProps}
+            classNames={mergedClassNames.value}
+            styles={mergedStyles.value}
+            checked={checked.value}
+            onChange={changeHandler}
+            prefixCls={prefixCls.value}
+            className={classes}
+            style={mergedStyle}
+            disabled={mergedDisabled.value}
+            loadingIcon={loadingIcon}
+            unCheckedChildren={unCheckedChildren}
+            checkedChildren={checkedChildren}
+            {
+              ...{
+                'onUpdate:checked': handleVMHandler,
+              }
+            }
+          />
+        </Wave>
+      )
+    }
+  },
+  {
+    name: 'ASwitch',
+    inheritAttrs: false,
+  },
+)
+
+;(Switch as any).install = (app: App) => {
+  app.component(Switch.name, Switch)
+}
+
+export default Switch

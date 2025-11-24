@@ -30,6 +30,7 @@ import type { SkeletonProps } from '../skeleton'
 import type { SpaceProps } from '../space'
 import type { SpinProps } from '../spin'
 import type { StatisticProps } from '../statistic'
+import type { SwitchProps } from '../switch'
 import type { TagProps } from '../tag'
 import type { AliasToken, MapToken, OverrideToken, SeedToken } from '../theme/interface'
 import type { TooltipProps } from '../tooltip'
@@ -252,6 +253,8 @@ export type RadioConfig = ComponentStyleConfig & Pick<RadioProps, 'classes' | 's
 
 export type CheckboxConfig = ComponentStyleConfig & Pick<CheckboxProps, 'classes' | 'styles'>
 
+export type SwitchStyleConfig = ComponentStyleConfig & Pick<SwitchProps, 'classes' | 'styles'>
+
 export interface ConfigComponentProps {
   // input?: InputConfig;
   // textArea?: TextAreaConfig;
@@ -296,7 +299,7 @@ export interface ConfigComponentProps {
   badge?: BadgeConfig
   radio?: RadioConfig
   rate?: ComponentStyleConfig
-  switch?: ComponentStyleConfig
+  switch?: SwitchStyleConfig
   // transfer?: TransferConfig;
   avatar?: ComponentStyleConfig
   message?: ComponentStyleConfig

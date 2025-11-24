@@ -59,5 +59,6 @@ declare module 'vue' {
     ARadio: typeof import('antdv-next')['Radio']
     ARadioGroup: typeof import('antdv-next')['RadioGroup']
     ARadioButton: typeof import('antdv-next')['RadioButton']
+    ASwitch: typeof import('antdv-next')['Switch']
   }
 }
