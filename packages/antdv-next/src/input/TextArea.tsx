@@ -48,6 +48,9 @@ export interface TextAreaProps
     | 'onKeydown'
     | 'onPressEnter'
     | 'onResize'
+    | 'maxLength'
+    | 'readOnly'
+    | 'minLength'
   > {
   /** @deprecated Use `variant` instead */
   bordered?: boolean
@@ -58,6 +61,9 @@ export interface TextAreaProps
   classes?: TextAreaClassNamesType
   styles?: TextAreaStylesType
   rows?: number
+  maxlength?: number
+  minlength?: number
+  readonly?: boolean
 }
 
 export interface TextAreaEmits {
@@ -218,6 +224,13 @@ const InternalTextArea = defineComponent<
       const { className, style, restAttrs } = getAttrStyleAndClass(attrs)
       const restProps = omit(props, omitKeys)
 
+      const textareaAttrs = {
+        ...restAttrs,
+        maxLength: props.maxlength,
+        minLength: props.minlength,
+        readOnly: props.readonly,
+      }
+
       const classesValue = clsx(
         cssVarCls.value,
         rootCls.value,
@@ -268,7 +281,7 @@ const InternalTextArea = defineComponent<
       }
       return (
         <VcTextArea
-          {...restAttrs}
+          {...textareaAttrs}
           {...restProps}
           ref={textAreaRef as any}
           prefixCls={prefixCls.value}
