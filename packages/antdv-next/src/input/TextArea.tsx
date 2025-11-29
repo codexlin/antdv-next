@@ -63,12 +63,12 @@ export interface TextAreaProps
 export interface TextAreaEmits {
   'pressEnter': NonNullable<VcTextAreaProps['onPressEnter']>
   'change': NonNullable<VcTextAreaProps['onChange']>
-  'focus': NonNullable<VcTextAreaProps['onFocus']>
-  'blur': NonNullable<VcTextAreaProps['onBlur']>
+  'focus': (e: FocusEvent) => void
+  'blur': (e: FocusEvent) => void
   'resize': NonNullable<VcTextAreaProps['onResize']>
-  'keydown': NonNullable<VcTextAreaProps['onKeyDown']>
-  'compositionStart': NonNullable<VcTextAreaProps['onCompositionStart']>
-  'compositionEnd': NonNullable<VcTextAreaProps['onCompositionEnd']>
+  'keydown': (e: KeyboardEvent) => void
+  'compositionstart': (e: CompositionEvent) => void
+  'compositionend': (e: CompositionEvent) => void
   'mousedown': (e: MouseEvent) => void
   'update:value': (value?: string | number) => void
   [key: string]: (...args: any[]) => any
@@ -97,7 +97,7 @@ const InternalTextArea = defineComponent<
   string,
   SlotsType<TextAreaSlots>
 >(
-  (props, { slots, attrs, emit, expose }) => {
+  (props, { attrs, emit, expose }) => {
     if (isDev) {
       const warning = devUseWarning('TextArea')
       warning.deprecated(props.bordered === undefined, 'bordered', 'variant')
@@ -207,9 +207,11 @@ const InternalTextArea = defineComponent<
 
     const handleFocus: TextAreaEmits['focus'] = e => emit('focus', e)
     const handleBlur: TextAreaEmits['blur'] = e => emit('blur', e)
-    const handleKeyDown: TextAreaEmits['keydown'] = e => emit('keydown', e)
-    const handleCompositionStart: TextAreaEmits['compositionStart'] = e => emit('compositionStart', e)
-    const handleCompositionEnd: TextAreaEmits['compositionEnd'] = e => emit('compositionEnd', e)
+    const handleKeyDown: TextAreaEmits['keydown'] = (e) => {
+      emit('keydown', e)
+    }
+    const handleCompositionStart: TextAreaEmits['compositionstart'] = e => emit('compositionstart', e)
+    const handleCompositionEnd: TextAreaEmits['compositionend'] = e => emit('compositionend', e)
 
     return () => {
       const { className, style, restAttrs } = getAttrStyleAndClass(attrs)
@@ -269,7 +271,7 @@ const InternalTextArea = defineComponent<
           {...restProps}
           ref={textAreaRef as any}
           prefixCls={prefixCls.value}
-          className={classesValue}
+          class={classesValue}
           style={mergedStyle}
           classNames={classNames as any}
           styles={mergedStyles.value as any}
@@ -281,16 +283,15 @@ const InternalTextArea = defineComponent<
             ...{
               onMousedown: handleMouseDown,
               onKeydown: handleKeyDown,
+              onFocus: handleFocus,
+              onBlur: handleBlur,
+              onCompositionstart: handleCompositionStart,
+              onCompositionend: handleCompositionEnd,
             }
           }
           onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onCompositionStart={handleCompositionStart}
-          onCompositionEnd={handleCompositionEnd}
           suffix={hasFeedback.value ? <span class={`${prefixCls.value}-textarea-suffix`}>{feedbackIcon.value}</span> : undefined}
           showCount={props.showCount}
-          v-slots={slots}
         />
       )
     }
