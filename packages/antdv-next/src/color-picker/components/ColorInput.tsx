@@ -77,10 +77,10 @@ export default defineComponent<
           )}
           <div class={`${prefixCls}-input`}>
             {steppersNode.value}
-            {!props.disabledAlpha && (
-              <ColorAlphaInput prefixCls={prefixCls} value={props.value} onChange={props.onChange} />
-            )}
           </div>
+          {!props.disabledAlpha && (
+            <ColorAlphaInput prefixCls={prefixCls} value={props.value} onChange={props.onChange} />
+          )}
         </div>
       )
     }

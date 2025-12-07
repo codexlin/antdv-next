@@ -59,6 +59,9 @@ export const PanelPickerContextProvider = defineComponent<PanelPickerContextProp
     usePanelPickerProvider(computed(() => props))
     return () => slots.default?.()
   },
+  {
+    inheritAttrs: false,
+  },
 )
 
 export function usePanelPresetsProvider(value: Ref<PanelPresetsContextProps>) {
@@ -73,5 +76,8 @@ export const PanelPresetsContextProvider = defineComponent<PanelPresetsContextPr
   (props, { slots }) => {
     usePanelPresetsProvider(computed(() => props))
     return () => slots.default?.()
+  },
+  {
+    inheritAttrs: false,
   },
 )

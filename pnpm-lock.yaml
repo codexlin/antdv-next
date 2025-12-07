@@ -255,11 +255,11 @@ importers:
         specifier: ^0.0.8
         version: 0.0.8(vue@3.5.24(typescript@5.9.3))
       '@v-c/select':
-        specifier: ^1.0.0
-        version: 1.0.0(vue@3.5.24(typescript@5.9.3))
+        specifier: ^1.0.1
+        version: 1.0.1(vue@3.5.24(typescript@5.9.3))
       '@v-c/slider':
-        specifier: ^1.0.7
-        version: 1.0.7(vue@3.5.24(typescript@5.9.3))
+        specifier: ^1.0.8
+        version: 1.0.8(vue@3.5.24(typescript@5.9.3))
       '@v-c/switch':
         specifier: ^0.0.1
         version: 0.0.1(vue@3.5.24(typescript@5.9.3))
@@ -1699,13 +1699,13 @@ packages:
     peerDependencies:
       vue: ^3.0.0
 
-  '@v-c/select@1.0.0':
-    resolution: {integrity: sha512-MbXucVzR/SffE6o24RR+9Sh3DmdIZwYgqIN5tgukBCGxSonp7wLrn2bjbuwHh3TzMvifys36QqZVKwHk7Lpccw==}
+  '@v-c/select@1.0.1':
+    resolution: {integrity: sha512-gVi59WBQHQ7UaHeUOQUTh/EoyfFk57Lqjg0AkxFjAvv4oO42BUHLVE3AboDqhLaDAG6QeaqFpmygIYaeeWlWBw==}
     peerDependencies:
       vue: ^3.0.0
 
-  '@v-c/slider@1.0.7':
-    resolution: {integrity: sha512-3YV8m4k1cceqIIyB4ft/LS7qJzzATV1OMBzWlgwW7rip22h6zCCFzkm8nr9LnTx9LJU7BRx9gAGSlBUzJHy5JA==}
+  '@v-c/slider@1.0.8':
+    resolution: {integrity: sha512-MPbli0TOp54w7rn9+WwacS/DzMSwWNgXIBTMgbHvlM+eAS4+fe8hVa0TbheBnlTcZwVHAkF5tVYuoS2OYVSI7Q==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -5438,7 +5438,7 @@ snapshots:
       '@v-c/util': 1.0.2(vue@3.5.24(typescript@5.9.3))
       vue: 3.5.24(typescript@5.9.3)
 
-  '@v-c/select@1.0.0(vue@3.5.24(typescript@5.9.3))':
+  '@v-c/select@1.0.1(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@v-c/overflow': 1.0.0(vue@3.5.24(typescript@5.9.3))
       '@v-c/trigger': 1.0.1(vue@3.5.24(typescript@5.9.3))
@@ -5446,7 +5446,7 @@ snapshots:
       '@v-c/virtual-list': 1.0.3(vue@3.5.24(typescript@5.9.3))
       vue: 3.5.24(typescript@5.9.3)
 
-  '@v-c/slider@1.0.7(vue@3.5.24(typescript@5.9.3))':
+  '@v-c/slider@1.0.8(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@v-c/util': 1.0.2(vue@3.5.24(typescript@5.9.3))
       vue: 3.5.24(typescript@5.9.3)

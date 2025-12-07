@@ -51,10 +51,7 @@ export default defineComponent<
                 inactive && `${colorTextCellPrefixCls.value}-inactive`,
               )}
             >
-              {c.color.toRgbString()}
-              {' '}
-              {c.percent}
-              %
+              {`${c.color.toRgbString()} ${c.percent}%`}
             </span>
           )
         })
@@ -72,9 +69,10 @@ export default defineComponent<
     })
 
     const containerNode = computed(() => {
-      return props.color?.cleared
-        ? <ColorClear prefixCls={props.prefixCls} />
-        : <ColorBlock prefixCls={props.prefixCls} color={props.color.toCssString()} />
+      const { color, prefixCls } = props
+      return color?.cleared
+        ? <ColorClear prefixCls={prefixCls} />
+        : <ColorBlock prefixCls={prefixCls} color={color.toCssString()} />
     })
 
     return () => {

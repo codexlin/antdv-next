@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 
-const color = shallowRef()
+const color = shallowRef('#1677ff')
 </script>
 
 <template>
-  <a-color-picker v-model:value="color" default-value="#1677ff" />
+  <a-color-picker v-model:value="color" />
 </template>
