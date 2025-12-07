@@ -385,7 +385,7 @@ const Select = defineComponent<
       const mergedPopupMatchSelectWidth = popupMatchSelectWidth ?? dropdownMatchSelectWidth ?? contextPopupMatchSelectWidth.value
       const popupRender = slots?.popupRender ?? props?.popupRender
       const mergedPopupRender = usePopupRender(popupRender || dropdownRender)
-      const notFoundContent = getSlotPropsFnRun(slots, props, 'notFoundContent')
+      const notFoundContent = getSlotPropsFnRun(slots, props, 'notFoundContent', false)
       const {
         status: contextStatus,
         hasFeedback,

@@ -24,7 +24,7 @@
     "@v-c/qrcode": "catalog:",
     "@v-c/resize-observer": "catalog:",
     "@v-c/segmented": "^0.0.8",
-    "@v-c/select": "link:/Users/yanyu/workspace/github/antdv-next/vue-components/packages/select",
+    "@v-c/select": "^1.0.0",
     "@v-c/slider": "^1.0.7",
     "@v-c/switch": "^0.0.1",
     "@v-c/tabs": "^0.0.3",
