@@ -311,7 +311,7 @@ const Modal = defineComponent<
         <ContextIsolator form space>
           <ZIndexProvider value={contextZIndex.value}>
             <Dialog
-              {...restAttrs as any}
+              {...omit(restAttrs, ['content']) as any}
               {...restProps as any}
               width={numWidth.value}
               zIndex={zIndex.value}

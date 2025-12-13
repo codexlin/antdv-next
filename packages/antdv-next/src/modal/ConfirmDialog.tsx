@@ -100,7 +100,9 @@ const ConfirmContent = defineComponent<
         confirmPrefixCls,
         footer,
       } = props
+      const content = getSlotPropsFnRun({}, props, 'content')
       const icon = getSlotPropsFnRun({}, props, 'icon')
+      const title = getSlotPropsFnRun({}, props, 'title')
       let mergedIcon = icon as any
       if (!icon && icon !== null) {
         switch (mergedType.value) {
@@ -118,7 +120,7 @@ const ConfirmContent = defineComponent<
         }
       }
 
-      const hasTitle = props.title !== undefined && props.title !== null
+      const hasTitle = title !== undefined && title !== null
       const bodyCls = `${confirmPrefixCls}-body`
 
       const footerOriginNode = (
@@ -132,8 +134,8 @@ const ConfirmContent = defineComponent<
           <div class={clsx(bodyCls, { [`${bodyCls}-has-title`]: hasTitle })}>
             {mergedIcon}
             <div class={`${confirmPrefixCls}-paragraph`}>
-              {hasTitle && <span class={`${confirmPrefixCls}-title`}>{props.title}</span>}
-              <div class={`${confirmPrefixCls}-content`}>{props.content}</div>
+              {hasTitle && <span class={`${confirmPrefixCls}-title`}>{title}</span>}
+              <div class={`${confirmPrefixCls}-content`}>{content}</div>
             </div>
           </div>
           {footer === undefined || typeof footer === 'function'
@@ -209,6 +211,7 @@ const ConfirmDialog = defineComponent<ConfirmDialogProps>(
         { [`${confirmPrefixCls}-rtl`]: direction === 'rtl' },
         className,
       )
+
       return (
         <Modal
           {...restProps as any}
