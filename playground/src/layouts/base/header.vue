@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { GithubOutlined } from '@antdv-next/icons'
 import { useBreakpoint } from 'antdv-next'
 import { ref, shallowRef } from 'vue'
+import DirectionIcon from '@/components/icons/directionIcon.vue'
 import SearchIcon from '@/components/icons/search.vue'
 import { headerItems } from '@/config/menu/header'
+import SwitchBtn from '@/layouts/base/components/switch-btn.vue'
 
 const selectedKeys = ref<string[]>([])
 const breakpoint = useBreakpoint()
@@ -52,6 +55,46 @@ const searchValue = shallowRef()
               variant="filled"
               class="min-w-90px"
             />
+            <SwitchBtn
+              key="lang" :value="1" tooltip1="中文 / English"
+              tooltip2="English / 中文"
+            >
+              <template #label1>
+                中
+              </template>
+              <template #label2>
+                En
+              </template>
+            </SwitchBtn>
+            <SwitchBtn
+              key="direction"
+              :value="1"
+              tooltip1="LTR"
+              tooltip2="RTL"
+              pure
+              aria-label="RTL Switch Button"
+            >
+              <template #label1>
+                <DirectionIcon class="w-20px" direction="ltr" />
+              </template>
+              <template #label2>
+                <DirectionIcon class="w-20px" direction="rtl" />
+              </template>
+            </SwitchBtn>
+            <a
+              key="github"
+              href="https://github.com/antdv-next/antdv-next"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <a-tooltip title="GitHub" destroy-on-hidden>
+                <a-button type="text" class="text-16px">
+                  <template #icon>
+                    <GithubOutlined />
+                  </template>
+                </a-button>
+              </a-tooltip>
+            </a>
           </template>
         </div>
       </a-col>

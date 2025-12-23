@@ -1,9 +1,12 @@
-# Button 按钮
+---
+title: Button
+subtitle: 按钮
+description: 按钮用于开始一个即时操作。
+---
 
-按钮用于开始一个即时操作。
+<DocHeading :frontmatter></DocHeading>
 
 ## 何时使用
-
 
 标记了一个（或封装一组）操作命令，响应用户点击行为，触发相应的业务逻辑。
 

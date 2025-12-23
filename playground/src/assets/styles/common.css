@@ -2,3 +2,8 @@
   padding: 16px;
   background: rgb(190, 200, 200);
 }
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #eaeaea transparent;
+}
