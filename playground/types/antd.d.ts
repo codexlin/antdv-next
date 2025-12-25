@@ -102,5 +102,6 @@ declare module 'vue' {
     APagination: typeof import('antdv-next')['Pagination']
     ATransfer: typeof import('antdv-next')['Transfer']
     AMentions: typeof import('antdv-next')['Mentions']
+    ACarousel: typeof import('antdv-next')['Carousel']
   }
 }

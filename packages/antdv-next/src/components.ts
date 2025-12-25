@@ -17,6 +17,8 @@ export { default as Button } from './button'
 export type { ButtonColorType, ButtonHTMLType, ButtonProps, ButtonShape, ButtonSize, ButtonType, ButtonVariantType } from './button'
 export { default as Card, CardGrid, CardMeta } from './card'
 export type { CardEmits, CardGridProps, CardMetaProps, CardProps, CardSize, CardSlots, CardTabListType } from './card'
+export { default as Carousel } from './carousel'
+export type { CarouselEmits, CarouselProps, CarouselRef, CarouselSlots } from './carousel'
 export { default as Checkbox, CheckboxGroup } from './checkbox'
 export type { CheckboxEmits, CheckboxGroupEmits, CheckboxGroupProps, CheckboxGroupSlots, CheckboxOptionType, CheckboxProps, CheckboxSlots } from './checkbox'
 export { default as Collapse } from './collapse'
@@ -69,8 +71,6 @@ export { default as Layout, LayoutContent, LayoutFooter, LayoutHeader, LayoutSid
 export type { LayoutProps } from './layout'
 export { default as Masonry } from './masonry'
 export type { MasonryEmits, MasonryProps, MasonryRef, MasonrySlots } from './masonry'
-export { default as Menu, MenuDivider, MenuItem, SubMenu } from './menu'
-export type { MenuEmits, MenuItemGroupProps, MenuItemProps, MenuItemType, MenuProps, MenuRef, MenuSlots, SubMenuProps } from './menu'
 export { default as Mentions, Option as MentionsOption } from './mentions'
 export type {
   MentionPlacement,
@@ -82,6 +82,8 @@ export type {
   MentionsSlots,
   MentionsStylesType,
 } from './mentions'
+export { default as Menu, MenuDivider, MenuItem, SubMenu } from './menu'
+export type { MenuEmits, MenuItemGroupProps, MenuItemProps, MenuItemType, MenuProps, MenuRef, MenuSlots, SubMenuProps } from './menu'
 export { default as message, useMessage } from './message'
 export { default as Modal, useModal } from './modal'
 export type { ModalEmits, ModalProps, ModalSlots } from './modal'
@@ -131,12 +133,21 @@ export { default as Steps } from './steps'
 export type { StepsProps } from './steps'
 export { default as Switch } from './switch'
 export type { SwitchEmits, SwitchProps, SwitchSize, SwitchSlots } from './switch'
+export { TabPane, default as Tabs } from './tabs'
+export type { TabPaneProps, TabsEmits, TabsProps, TabsRef, TabsSlots } from './tabs'
+export { CheckableTag, CheckableTagGroup, default as Tag } from './tag'
+export type { CheckableTagProps, TagProps, TagSlots } from './tag'
+export { default as Timeline } from './timeline'
+export type { TimelineItemProps, TimelineProps } from './timeline'
+export { default as Tooltip, UniqueProvider } from './tooltip'
+export type { TooltipAlignConfig, TooltipEmits, TooltipPlacement, TooltipProps, TooltipRef, TooltipSlots } from './tooltip'
+export { default as Tour } from './tour'
+export type { TourEmits, TourLocale, TourProps, TourSlots, TourStepItem, TourStylesType } from './tour'
 export { default as Transfer } from './transfer'
 export type {
   KeyWise,
   KeyWiseTransferItem,
   ListStyle,
-  PaginationType as TransferPaginationType,
   RenderResult,
   RenderResultObject,
   SelectAllLabel,
@@ -150,6 +161,7 @@ export type {
   TransferListProps,
   TransferLocale,
   TransferOperationProps,
+  PaginationType as TransferPaginationType,
   TransferProps,
   TransferRender,
   TransferSearchEmits,
@@ -160,16 +172,6 @@ export type {
   TransferSlots,
   TransferStylesType,
 } from './transfer'
-export { TabPane, default as Tabs } from './tabs'
-export type { TabPaneProps, TabsEmits, TabsProps, TabsRef, TabsSlots } from './tabs'
-export { CheckableTag, CheckableTagGroup, default as Tag } from './tag'
-export type { CheckableTagProps, TagProps, TagSlots } from './tag'
-export { default as Timeline } from './timeline'
-export type { TimelineItemProps, TimelineProps } from './timeline'
-export { default as Tooltip, UniqueProvider } from './tooltip'
-export type { TooltipAlignConfig, TooltipEmits, TooltipPlacement, TooltipProps, TooltipRef, TooltipSlots } from './tooltip'
-export { default as Tour } from './tour'
-export type { TourEmits, TourLocale, TourProps, TourSlots, TourStepItem, TourStylesType } from './tour'
 export { DirectoryTree, default as Tree } from './tree'
 export type {
   AntdTreeNodeAttribute,

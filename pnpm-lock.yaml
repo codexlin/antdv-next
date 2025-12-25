@@ -278,6 +278,9 @@ importers:
       '@v-c/select':
         specifier: ^1.0.3
         version: 1.0.3(vue@3.5.25(typescript@5.9.3))
+      '@v-c/slick':
+        specifier: link:/Users/zhuzhengjian/workspace/gitea/antdv-next/vue-components/packages/slick
+        version: link:../../../vue-components/packages/slick
       '@v-c/slider':
         specifier: ^1.0.8
         version: 1.0.8(vue@3.5.25(typescript@5.9.3))

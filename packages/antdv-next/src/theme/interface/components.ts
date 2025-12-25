@@ -9,7 +9,7 @@ import type { ComponentToken as BreadcrumbComponentToken } from '../../breadcrum
 import type { ComponentToken as ButtonComponentToken } from '../../button/style'
 // import type { ComponentToken as CalendarComponentToken } from '../../calendar/style';
 import type { ComponentToken as CardComponentToken } from '../../card/style'
-// import type { ComponentToken as CarouselComponentToken } from '../../carousel/style';
+import type { ComponentToken as CarouselComponentToken } from '../../carousel/style'
 // import type { ComponentToken as CascaderComponentToken } from '../../cascader/style';
 import type { ComponentToken as CheckboxComponentToken } from '../../checkbox/style'
 import type { ComponentToken as CollapseComponentToken } from '../../collapse/style'
@@ -74,7 +74,7 @@ export interface ComponentTokenMap {
   Breadcrumb?: BreadcrumbComponentToken
   Masonry?: MasonryComponentToken
   Card?: CardComponentToken
-  // Carousel?: CarouselComponentToken;
+  Carousel?: CarouselComponentToken
   // Cascader?: CascaderComponentToken;
   Checkbox?: CheckboxComponentToken
   ColorPicker?: ColorPickerComponentToken
