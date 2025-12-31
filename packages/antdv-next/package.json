@@ -66,7 +66,7 @@
     "@v-c/slider": "^1.0.8",
     "@v-c/steps": "^0.0.1",
     "@v-c/switch": "^0.0.1",
-    "@v-c/table": "link:/Users/yanyu/workspace/github/antdv-next/vue-components/packages/table",
+    "@v-c/table": "^0.0.3",
     "@v-c/tabs": "^0.0.3",
     "@v-c/textarea": "^1.0.1",
     "@v-c/tooltip": "^1.0.1",
