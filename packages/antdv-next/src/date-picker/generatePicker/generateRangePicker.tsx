@@ -208,7 +208,7 @@ function generateRangePicker<DateType extends AnyObject = AnyObject>(generateCon
       expose({
         focus: (options?: FocusOptions) => innerRef.value?.focus?.(options as any),
         blur: () => innerRef.value?.blur?.(),
-        nativeElement: () => innerRef.value?.nativeElement?.(),
+        nativeElement: computed(() => innerRef.value?.nativeElement),
       })
 
       return () => {
@@ -240,7 +240,7 @@ function generateRangePicker<DateType extends AnyObject = AnyObject>(generateCon
 
         const [mergedAllowClear] = useIcons({ allowClear }, prefixCls.value)
 
-        const mergedComponents = useComponents(components).value
+        const mergedComponents = useComponents(components as any)
 
         const formItemContext = useFormItemInputContext()
         const { hasFeedback, status: contextStatus, feedbackIcon } = formItemContext.value
@@ -330,7 +330,7 @@ function generateRangePicker<DateType extends AnyObject = AnyObject>(generateCon
               locale={locale.value?.lang}
               getPopupContainer={props.getPopupContainer || getPopupContainer}
               generateConfig={generateConfig}
-              components={mergedComponents}
+              components={mergedComponents as any}
               direction={direction.value}
               // Style
               prefixCls={prefixCls.value}

@@ -2,7 +2,7 @@ import type { PickerMode, PickerRef } from '@v-c/picker'
 import type { GenerateConfig } from '@v-c/picker/generate/index'
 import type { SlotsType } from 'vue'
 import type { AnyObject, VueNode } from '../../_util/type'
-import type { GenericTimePickerProps, PickerProps, PickerPropsWithMultiple } from './interface'
+import type { GenericTimePickerProps, PickerProps } from './interface'
 import Picker from '@v-c/picker'
 import { clsx } from '@v-c/util'
 import { getTransitionName } from '@v-c/util/dist/utils/transition'
@@ -73,8 +73,8 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
 
     const name = displayName ? `A${displayName}` : 'ADatePicker'
 
-    const PickerComponent = defineComponent<
-      P,
+    return defineComponent<
+      DatePickerProps,
       DatePickerEmits<DateType>,
       string,
       SlotsType<DatePickerSlots>
@@ -243,7 +243,7 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
         expose({
           focus: (options?: FocusOptions) => innerRef.value?.focus?.(options),
           blur: () => innerRef.value?.blur?.(),
-          nativeElement: () => innerRef.value?.nativeElement?.(),
+          nativeElement: computed(() => () => innerRef.value?.nativeElement),
         })
 
         return () => {
@@ -273,9 +273,12 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
 
           const mergedSuffixIcon = getSlotPropsFnRun(slots, { suffixIcon }, 'suffixIcon', false)
 
-          const [mergedAllowClear, removeIcon] = useIcons({ allowClear, removeIcon: (props as any).removeIcon }, prefixCls.value)
+          const [mergedAllowClear, removeIcon] = useIcons({
+            allowClear,
+            removeIcon: (props as any).removeIcon,
+          }, prefixCls.value)
 
-          const mergedComponents = useComponents(components).value
+          const mergedComponents = useComponents(components as any)
 
           const formItemContext = useFormItemInputContext()
           const { hasFeedback, status: contextStatus, feedbackIcon } = formItemContext.value
@@ -318,7 +321,10 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
             : undefined
 
           const monthCellRender = slots.monthCellRender || (props as any).monthCellRender
-            ? (date: AnyObject, localeInfo: any) => resolveRender('monthCellRender', [date, localeInfo], { date, locale: localeInfo })
+            ? (date: AnyObject, localeInfo: any) => resolveRender('monthCellRender', [date, localeInfo], {
+                date,
+                locale: localeInfo,
+              })
             : undefined
 
           const renderExtraFooter = slots.renderExtraFooter || (props as any).renderExtraFooter
@@ -338,7 +344,7 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
               <Picker
                 {...restAttrs}
                 {...additionalProps}
-                {...restProps}
+                {...restProps as any}
                 ref={innerRef}
                 placeholder={getPlaceholder(locale.value, mergedPicker.value, placeholder)}
                 suffixIcon={suffixNode}
@@ -379,7 +385,7 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
                       zIndex: zIndex.value,
                     },
                   },
-                }}
+                } as any}
                 allowClear={mergedAllowClear as any}
                 removeIcon={removeIcon}
                 cellRender={cellRender}
@@ -398,10 +404,6 @@ function generatePicker<DateType extends AnyObject = AnyObject>(generateConfig: 
         inheritAttrs: false,
       },
     )
-
-    return PickerComponent as unknown as (<ValueType = DateType, IsMultiple extends boolean = false>(
-      props: PickerPropsWithMultiple<DateType, P, ValueType, IsMultiple>,
-    ) => any) & { displayName?: string }
   }
 
   const DatePicker = getPicker<DatePickerProps>()

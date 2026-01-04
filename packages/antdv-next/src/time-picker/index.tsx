@@ -117,7 +117,7 @@ const RangePicker = defineComponent<
     expose({
       focus: (options?: FocusOptions) => rangeRef.value?.focus?.(options as any),
       blur: () => rangeRef.value?.blur?.(),
-      nativeElement: () => rangeRef.value?.nativeElement?.(),
+      nativeElement: computed(() => rangeRef.value?.nativeElement),
     })
 
     return () => (
@@ -287,7 +287,7 @@ const TimePicker = defineComponent<
     expose({
       focus: (options?: FocusOptions) => pickerRef.value?.focus?.(options),
       blur: () => pickerRef.value?.blur?.(),
-      nativeElement: () => pickerRef.value?.nativeElement?.(),
+      nativeElement: computed(() => pickerRef.value?.nativeElement),
     })
 
     return () => {
@@ -349,3 +349,5 @@ export type MergedTimePicker = typeof TimePicker & {
 }
 
 export default TimePicker as MergedTimePicker
+
+export const TimeRangePicker = RangePicker
