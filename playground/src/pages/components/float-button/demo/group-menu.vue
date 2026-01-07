@@ -1,3 +1,11 @@
+<docs lang="zh-CN">
+设置 `trigger` 属性即可开启菜单模式。提供 `hover` 和 `click` 两种触发方式。
+</docs>
+
+<docs lang="en-US">
+Open menu mode with `trigger`, which could be `hover` or `click`.
+</docs>
+
 <script setup lang="ts">
 import { CommentOutlined, CustomerServiceOutlined } from '@antdv-next/icons'
 </script>

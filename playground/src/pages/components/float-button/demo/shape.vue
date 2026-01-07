@@ -1,3 +1,11 @@
+<docs lang="zh-CN">
+通过 `shape` 设置不同的形状。
+</docs>
+
+<docs lang="en-US">
+Change the shape of the FloatButton with the `shape` property.
+</docs>
+
 <script setup lang="ts">
 import { CustomerServiceOutlined } from '@antdv-next/icons'
 </script>

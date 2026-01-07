@@ -1,3 +1,11 @@
+<docs lang="zh-CN">
+右上角附带圆形徽标数字的悬浮按钮。
+</docs>
+
+<docs lang="en-US">
+FloatButton with Badge.
+</docs>
+
 <script setup lang="ts">
 import { QuestionCircleOutlined } from '@antdv-next/icons'
 </script>

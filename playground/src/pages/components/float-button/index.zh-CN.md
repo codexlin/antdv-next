@@ -14,10 +14,18 @@ demo:
 
 ## 何时使用 {#when-to-use}
 
+- 用于网站上的全局功能；
+- 无论浏览到何处都可以看见的按钮。
+
+
 ## 示例 {#examples}
 
 <demo-group>
+  <demo src="./demo/basic.vue" iframe="360">基本</demo>
+  <demo src="./demo/shape.vue" iframe="360">形状</demo>
+  <demo src="./demo/group-menu.vue" iframe="360">菜单模式</demo>
   <demo src="./demo/back-top.vue" iframe="360">回到顶部</demo>
+  <demo src="./demo/badge.vue" iframe="360">徽标数</demo>
 </demo-group>
 
 ## API
