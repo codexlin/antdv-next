@@ -73,7 +73,7 @@ const iconMapFilled = {
 
 interface IconNodeProps {
   type: AlertProps['type']
-  icon: AlertProps['icon']
+  icon?: AlertProps['icon']
   prefixCls: AlertProps['prefixCls']
   description: AlertProps['description']
 }
