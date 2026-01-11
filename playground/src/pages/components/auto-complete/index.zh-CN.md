@@ -37,8 +37,6 @@ demo:
   <demo src="./demo/variant.vue">多种形态</demo>
   <demo src="./demo/allowClear.vue">自定义清除按钮</demo>
   <demo src="./demo/style-class.vue">自定义语义结构的样式和类</demo>
-  <demo src="./demo/auto-complete-and-select.vue" debug>AutoComplete 和 Select</demo>
-  <demo src="./demo/render-panel.vue" debug>控制面板渲染</demo>
 </demo-group>
 
 ## API

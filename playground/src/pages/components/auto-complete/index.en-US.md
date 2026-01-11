@@ -36,8 +36,6 @@ The differences with Select are:
   <demo src="./demo/variant.vue">Variants</demo>
   <demo src="./demo/allowClear.vue">Customize clear button</demo>
   <demo src="./demo/style-class.vue">Custom semantic dom styling</demo>
-  <demo src="./demo/auto-complete-and-select.vue" debug>AutoComplete and Select</demo>
-  <demo src="./demo/render-panel.vue" debug>Render Panel</demo>
 </demo-group>
 
 ## API
