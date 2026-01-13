@@ -16,7 +16,7 @@ import BreadcrumbSeparator from './BreadcrumbSeparator'
 import { renderItem } from './useItemRender'
 
 export interface SeparatorType {
-  separator?: VueNode
+  separator?: any
   key?: Key
 }
 
@@ -90,6 +90,7 @@ export const InternalBreadcrumbItem = defineComponent<
     }
     return () => {
       const { separator = '/' } = props
+      console.log(props)
       const children = checkRenderNode(filterEmpty(slots?.default?.() ?? []))
       const { classes: mergedClassNames, styles: mergedStyles } = breadcrumbContext.value
       // wrap to dropDown
@@ -101,7 +102,7 @@ export const InternalBreadcrumbItem = defineComponent<
             <li class={mergedClassNames?.item} style={mergedStyles?.item}>
               {link}
             </li>
-            {separator && <BreadcrumbSeparator>{separator}</BreadcrumbSeparator>}
+            {!!separator && <BreadcrumbSeparator>{separator}</BreadcrumbSeparator>}
           </>
         )
       }

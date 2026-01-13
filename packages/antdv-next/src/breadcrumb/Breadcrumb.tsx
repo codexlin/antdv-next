@@ -62,7 +62,7 @@ export type BreadcrumbStylesType<T extends AnyObject = AnyObject> = SemanticStyl
 export interface BreadcrumbProps<T extends AnyObject = AnyObject> {
   prefixCls?: string
   params?: T
-  separator?: VueNode
+  separator?: any
   rootClass?: string
 
   items?: ItemType[]
@@ -226,7 +226,7 @@ const Breadcrumb = defineComponent<
               style={style}
               dropdownProps={dropdownProps}
               href={href}
-              separator={isLastItem ? false : mergedSeparator.value}
+              separator={isLastItem ? '' : mergedSeparator.value}
               onClick={handleClick}
               prefixCls={prefixCls.value}
             >

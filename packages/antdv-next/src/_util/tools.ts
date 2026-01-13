@@ -22,7 +22,7 @@ export function getSlotPropsFnRun(slots: any, props: any, key: string, isNull = 
     if (node && node.length === 1 && node[0] === null) {
       return null
     }
-    const nodes = filterEmpty(node).filter(Boolean)
+    const nodes = filterEmpty(node).filter(node => node !== undefined && node !== null)
     if (nodes.length) {
       if (nodes.length === 1) {
         return nodes[0]
