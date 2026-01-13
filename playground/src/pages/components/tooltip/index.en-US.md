@@ -24,11 +24,7 @@ demo:
   <demo src="./demo/placement.vue">Placement</demo>
   <demo src="./demo/arrow.vue">Arrow</demo>
   <demo src="./demo/shift.vue" iframe="300">Auto Shift</demo>
-  <demo src="./demo/auto-adjust-overflow.vue" debug>Adjust placement automatically</demo>
-  <demo src="./demo/destroy-on-close.vue" debug>Destroy tooltip when hidden</demo>
   <demo src="./demo/colorful.vue">Colorful Tooltip</demo>
-  <demo src="./demo/render-panel.vue" debug>_InternalPanelDoNotUseOrYouWillBeFired</demo>
-  <demo src="./demo/debug.vue" debug>Debug</demo>
   <demo src="./demo/disabled.vue">Disabled</demo>
   <demo src="./demo/disabled-children.vue" debug>Disabled children</demo>
   <demo src="./demo/wrap-custom-component.vue">Wrap custom component</demo>

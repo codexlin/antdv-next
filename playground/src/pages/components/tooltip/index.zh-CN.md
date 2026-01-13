@@ -25,13 +25,8 @@ demo:
   <demo src="./demo/placement.vue">位置</demo>
   <demo src="./demo/arrow.vue">箭头展示</demo>
   <demo src="./demo/shift.vue" iframe="300">贴边偏移</demo>
-  <demo src="./demo/auto-adjust-overflow.vue" debug>自动调整位置</demo>
-  <demo src="./demo/destroy-on-close.vue" debug>隐藏后销毁</demo>
   <demo src="./demo/colorful.vue">多彩文字提示</demo>
-  <demo src="./demo/render-panel.vue" debug>_InternalPanelDoNotUseOrYouWillBeFired</demo>
-  <demo src="./demo/debug.vue" debug>Debug</demo>
   <demo src="./demo/disabled.vue">禁用</demo>
-  <demo src="./demo/disabled-children.vue" debug>禁用子元素</demo>
   <demo src="./demo/wrap-custom-component.vue">自定义子组件</demo>
   <demo src="./demo/style-class.vue">自定义语义结构的样式和类</demo>
 </demo-group>
