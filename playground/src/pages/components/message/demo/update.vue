@@ -1,3 +1,11 @@
+<docs lang="zh-CN">
+可以通过唯一的 `key` 来更新内容。
+</docs>
+
+<docs lang="en-US">
+Update message content with unique `key`.
+</docs>
+
 <script setup lang="ts">
 import { message } from 'antdv-next'
 
@@ -10,7 +18,6 @@ function openMessage() {
     type: 'loading',
     content: 'Loading...',
   })
-  // Dismiss manually and asynchronously
   setTimeout(() => {
     messageApi.open({
       key,

@@ -1,3 +1,11 @@
+<docs lang="zh-CN">
+进行全局 loading，异步自行移除。
+</docs>
+
+<docs lang="en-US">
+Display a global loading indicator, which is dismissed by itself asynchronously.
+</docs>
+
 <script setup lang="ts">
 import { message } from 'antdv-next'
 

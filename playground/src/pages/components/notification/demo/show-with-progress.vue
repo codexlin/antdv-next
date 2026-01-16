@@ -1,3 +1,11 @@
+<docs lang="zh-CN">
+显示自动关闭通知框的进度条。
+</docs>
+
+<docs lang="en-US">
+Show progress bar for auto-closing notification.
+</docs>
+
 <script lang="ts" setup>
 import { notification } from 'antdv-next'
 

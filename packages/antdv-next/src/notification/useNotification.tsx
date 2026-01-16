@@ -1,5 +1,5 @@
 import type { NotificationAPI, NotificationConfig as VcNotificationConfig } from '@v-c/notification'
-import type { Key } from '@v-c/util/dist/type'
+import type { Key, MaybeRef } from '@v-c/util/dist/type'
 import type { SemanticClassNames, SemanticStyles } from '../_util/hooks'
 import type { NotificationConfig as CPNotificationConfig } from '../config-provider/context'
 import type {
@@ -14,7 +14,7 @@ import type {
 import type { PureContentProps } from './PurePanel.tsx'
 import { useNotificationProvider, useNotification as useVcNotification } from '@v-c/notification'
 import { clsx } from '@v-c/util'
-import { computed, defineComponent, shallowRef } from 'vue'
+import { computed, defineComponent, shallowRef, unref } from 'vue'
 import { mergeClassNames, mergeStyles, resolveStyleOrClass, useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
 import { computeClosable, pickClosable } from '../_util/hooks/useClosable.tsx'
 import { toPropsRefs } from '../_util/tools.ts'
@@ -152,7 +152,7 @@ const Holder = defineComponent<HolderProps>(
 // ==                                   Hook                                   ==
 // ==============================================================================
 export function useInternalNotification(
-  notificationConfig?: HolderProps,
+  notificationConfig?: MaybeRef<HolderProps>,
 ) {
   const holderRef = shallowRef<HolderRef>()
   const warning = devUseWarning('Notification')
@@ -202,11 +202,11 @@ export function useInternalNotification(
 
       const realCloseIcon = getCloseIcon(
         noticePrefixCls,
-        getCloseIconConfig(closeIcon, notificationConfig, notification),
+        getCloseIconConfig(closeIcon, unref(notificationConfig), notification),
       )
 
       const [rawClosable, mergedCloseIcon, , ariaProps] = computeClosable(
-        pickClosable(computed(() => ({ ...(notificationConfig || {}), ...config }))) as any,
+        pickClosable(computed(() => ({ ...(unref(notificationConfig) || {}), ...config }))) as any,
         pickClosable(notificationContext as any) as any,
         computed(() => ({
           closable: true,
@@ -237,7 +237,7 @@ export function useInternalNotification(
       )
       return originOpen({
         // use placement from props instead of hard-coding "topRight"
-        placement: notificationConfig?.placement ?? DEFAULT_PLACEMENT,
+        placement: unref(notificationConfig)?.placement ?? DEFAULT_PLACEMENT,
         ...restConfig,
         content: (
           <PureContent
@@ -285,12 +285,12 @@ export function useInternalNotification(
     return clone
   }
   const holderContext = () => {
-    return <Holder key="notificaion-holder" {...notificationConfig} ref={holderRef}></Holder>
+    return <Holder key="notificaion-holder" {...unref(notificationConfig)} ref={holderRef}></Holder>
   }
   // ============================== Return ===============================
   return [wrapAPIFn(), holderContext] as const
 }
 
-export default function useNotification(notificationConfig?: NotificationConfig) {
+export default function useNotification(notificationConfig?: MaybeRef<NotificationConfig>) {
   return useInternalNotification(notificationConfig)
 }

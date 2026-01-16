@@ -3,7 +3,7 @@ import { Popup } from '@v-c/tooltip'
 import { clsx } from '@v-c/util'
 import { computed, defineComponent } from 'vue'
 import { useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
-import { toPropsRefs } from '../_util/tools.ts'
+import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools.ts'
 import { useComponentBaseConfig } from '../config-provider/context'
 import useStyle from './style'
 import { parseColor } from './util.ts'
@@ -18,7 +18,7 @@ const defaults = {
 
 /** @private Internal Component. Do not use in your production. */
 const PurePanel = defineComponent<PurePanelProps>(
-  (props = defaults, { attrs }) => {
+  (props = defaults, { attrs, slots }) => {
     const { prefixCls, rootPrefixCls } = useComponentBaseConfig('tooltip', props)
     const rootCls = rootPrefixCls
     const { placement, classes, styles } = toPropsRefs(props, 'placement', 'classes', 'styles')
@@ -42,9 +42,7 @@ const PurePanel = defineComponent<PurePanelProps>(
 
     return () => {
       const arrowContentStyle = colorInfo.value.arrowStyle
-      const {
-        title,
-      } = props
+      const title = getSlotPropsFnRun(slots, props, 'title')
       const rootClassName = clsx(
         rootCls.value,
         hashId.value,

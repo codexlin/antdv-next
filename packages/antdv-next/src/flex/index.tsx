@@ -52,7 +52,8 @@ const Flex = defineComponent<FlexProps, EmptyEmit, string, SlotsType<FlexSlots>>
         mergedStyle.flex = flex
       }
       if (gap && !isPresetSize(gap)) {
-        mergedStyle.gap = typeof gap === 'number' ? `${gap}px` : gap
+        // 判断是否为数字
+        mergedStyle.gap = /\d/.test(`${gap}`) ? `${gap}px` : gap
       }
 
       return createVNode(
