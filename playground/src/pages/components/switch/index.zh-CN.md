@@ -17,6 +17,13 @@ demo:
 ## 示例 {#examples}
 
 <demo-group>
+  <demo src="./demo/basic.vue">基本</demo>
+  <demo src="./demo/disabled.vue">不可用</demo>
+  <demo src="./demo/text.vue">文字和图标</demo>
+  <demo src="./demo/size.vue">两种大小</demo>
+  <demo src="./demo/loading.vue">加载中</demo>
+  <demo src="./demo/component-token.vue" debug>自定义组件 Token</demo>
+  <demo src="./demo/style-class.vue" version="6.0.0">自定义语义结构的样式和类</demo>
 </demo-group>
 
 ## API

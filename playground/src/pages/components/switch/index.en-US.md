@@ -16,6 +16,13 @@ demo:
 ## Examples {#examples}
 
 <demo-group>
+  <demo src="./demo/basic.vue">Basic</demo>
+  <demo src="./demo/disabled.vue">Disabled</demo>
+  <demo src="./demo/text.vue">Text & icon</demo>
+  <demo src="./demo/size.vue">Two sizes</demo>
+  <demo src="./demo/loading.vue">Loading</demo>
+  <demo src="./demo/component-token.vue" debug>Custom component token</demo>
+  <demo src="./demo/style-class.vue" version="6.0.0">Custom semantic dom styling</demo>
 </demo-group>
 
 ## API
