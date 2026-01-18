@@ -11,6 +11,7 @@ import { omit } from 'es-toolkit'
 import { toArray } from 'es-toolkit/compat'
 import { computed, defineComponent, isVNode, Text } from 'vue'
 import { getAttrStyleAndClass, useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { toPropsRefs } from '../_util/tools'
 import { devUseWarning, isDev } from '../_util/warning'
 import { useComponentBaseConfig } from '../config-provider/context'
@@ -338,7 +339,6 @@ const InternalAutoComplete = defineComponent<
       }
 
       const inputProps = getInputElement ? ({ getInputElement } as any) : {}
-
       return (
         <Select
           {...restAttrs}
@@ -371,9 +371,18 @@ const InternalAutoComplete = defineComponent<
 const AutoComplete = InternalAutoComplete as typeof InternalAutoComplete & {
   Option: typeof Option
   install: (app: App) => void
+  _InternalPanelDoNotUseOrYouWillBeFired: any
 }
 
+// We don't care debug panel
+/* istanbul ignore next */
+const PurePanel = genPurePanel(InternalAutoComplete, 'popupAlign', (props: any) => {
+  return omit(props, ['visible'])
+})
+
 AutoComplete.Option = Option
+
+AutoComplete._InternalPanelDoNotUseOrYouWillBeFired = PurePanel
 
 AutoComplete.install = (app: App): void => {
   app.component(AutoComplete.name, AutoComplete)

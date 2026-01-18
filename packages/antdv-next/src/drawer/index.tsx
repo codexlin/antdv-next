@@ -341,16 +341,16 @@ export const PurePanel = defineComponent<Omit<DrawerPanelProps, 'prefixCls'> & P
         ...restProps
       } = props
       const cls = clsx(
-        prefixCls,
-        `${prefixCls}-pure`,
-        `${prefixCls}-${placement}`,
-        hashId,
-        cssVarCls,
+        prefixCls.value,
+        `${prefixCls.value}-pure`,
+        `${prefixCls.value}-${placement}`,
+        hashId.value,
+        cssVarCls.value,
         className,
       )
       return (
         <div class={cls} style={style}>
-          <DrawerPanel {...restAttrs} v-slots={slots} prefixCls={prefixCls.value} {...restProps} />
+          <DrawerPanel {...restAttrs} v-slots={slots} {...restProps} prefixCls={prefixCls.value} />
         </div>
       )
     }

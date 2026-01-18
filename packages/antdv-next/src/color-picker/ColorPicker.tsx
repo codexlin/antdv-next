@@ -1,11 +1,19 @@
 import type { App, SlotsType } from 'vue'
 import type { PopoverProps } from '../popover'
-import type { ColorFormatType, ColorPickerEmits, ColorPickerProps, ColorPickerSlots, ModeType } from './interface'
+import type {
+  ColorFormatType,
+  ColorPickerEmits,
+  ColorPickerProps,
+  ColorPickerSlots,
+  ModeType,
+  TriggerPlacement,
+} from './interface'
 import { clsx } from '@v-c/util'
 import { filterEmpty } from '@v-c/util/dist/props-util'
 import { computed, defineComponent, shallowRef, watch } from 'vue'
 import { ContextIsolator } from '../_util/ContextIsolator.tsx'
 import { getAttrStyleAndClass, useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { getStatusClassNames } from '../_util/statusUtils.ts'
 import { toPropsRefs } from '../_util/tools'
 import { useComponentBaseConfig } from '../config-provider/context'
@@ -109,10 +117,13 @@ const ColorPicker = defineComponent<
     )
 
     const internalPopupOpen = shallowRef(open.value ?? false)
-    watch(open, (val) => {
-      if (val !== undefined)
-        internalPopupOpen.value = val
-    })
+    watch(
+      open,
+      (val) => {
+        if (val !== undefined)
+          internalPopupOpen.value = val
+      },
+    )
 
     const popupOpen = computed(() => !mergedDisabled.value && internalPopupOpen.value)
     const formatValue = shallowRef<ColorFormatType | undefined>(format.value ?? props.defaultFormat)
@@ -131,6 +142,11 @@ const ColorPicker = defineComponent<
     }
 
     const triggerOpenChange = (visible: boolean) => {
+      if (open.value !== undefined) {
+        emit('openChange', visible)
+        emit('update:open', visible)
+        return
+      }
       if (!visible || !mergedDisabled.value) {
         internalPopupOpen.value = visible
         emit('openChange', visible)
@@ -342,6 +358,21 @@ const ColorPicker = defineComponent<
     inheritAttrs: false,
   },
 )
+
+const PurePanel = genPurePanel(
+  ColorPicker,
+  undefined,
+  (props: ColorPickerProps) => ({
+    ...props,
+    placement: 'bottom' as TriggerPlacement,
+    autoAdjustOverflow: false,
+  }),
+  'color-picker',
+  /* istanbul ignore next */
+  prefixCls => prefixCls,
+)
+
+;(ColorPicker as any)._InternalPanelDoNotUseOrYouWillBeFired = PurePanel
 
 ;(ColorPicker as any).install = (app: App) => {
   app.component(ColorPicker.name, ColorPicker)

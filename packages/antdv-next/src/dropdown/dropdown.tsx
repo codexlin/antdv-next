@@ -13,6 +13,7 @@ import { omit } from 'es-toolkit'
 import { computed, createVNode, defineComponent, isVNode, shallowRef, watch } from 'vue'
 import { useMergeSemantic, useToArr, useToProps, useZIndex } from '../_util/hooks'
 import getPlacements from '../_util/placements'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { toPropsRefs } from '../_util/tools'
 import { devUseWarning } from '../_util/warning'
 import { ZIndexProvider } from '../_util/zindexContext'
@@ -339,6 +340,19 @@ const Dropdown = defineComponent<
     inheritAttrs: false,
   },
 )
+
+// We don't care debug panel
+const PurePanel = genPurePanel(Dropdown, 'align', undefined, 'dropdown', prefixCls => prefixCls)
+
+/* istanbul ignore next */
+function WrapPurePanel(props: any) {
+  return (
+    <PurePanel {...props}>
+      <span />
+    </PurePanel>
+  )
+}
+;(Dropdown as any)._InternalPanelDoNotUseOrYouWillBeFired = WrapPurePanel
 
 ;(Dropdown as any).install = (app: App) => {
   app.component(Dropdown.name, Dropdown)

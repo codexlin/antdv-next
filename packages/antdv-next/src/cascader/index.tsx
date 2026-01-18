@@ -18,6 +18,7 @@ import {
   useToProps,
   useZIndex,
 } from '../_util/hooks'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { getMergedStatus, getStatusClassNames } from '../_util/statusUtils'
 import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools'
 import { devUseWarning, isDev } from '../_util/warning'
@@ -526,6 +527,7 @@ const Cascader = InternalCascader as typeof InternalCascader & {
   Panel: typeof CascaderPanel
   SHOW_PARENT: typeof SHOW_PARENT
   SHOW_CHILD: typeof SHOW_CHILD
+  _InternalPanelDoNotUseOrYouWillBeFired: any
 }
 
 Cascader.Panel = CascaderPanel
@@ -536,6 +538,11 @@ Cascader.install = (app: App) => {
   app.component(Cascader.name, Cascader)
   app.component(CascaderPanel.name, CascaderPanel)
 }
+
+// We don't care debug panel
+/* istanbul ignore next */
+const PurePanel = genPurePanel(Cascader, 'popupAlign', (props: any) => omit(props, ['visible']))
+Cascader._InternalPanelDoNotUseOrYouWillBeFired = PurePanel
 
 export { CascaderPanel, SHOW_CHILD, SHOW_PARENT }
 export default Cascader

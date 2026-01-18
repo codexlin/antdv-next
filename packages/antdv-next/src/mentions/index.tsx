@@ -16,6 +16,7 @@ import { omit } from 'es-toolkit'
 import { computed, defineComponent, shallowRef } from 'vue'
 import getAllowClear from '../_util/getAllowClear'
 import { getAttrStyleAndClass, useMergeSemantic, useToArr, useToProps } from '../_util/hooks'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { getMergedStatus, getStatusClassNames } from '../_util/statusUtils'
 import toList from '../_util/toList'
 import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools'
@@ -387,6 +388,7 @@ const Mentions = InternalMentions as typeof InternalMentions & {
   Option: typeof Option
   getMentions: (value: string, config?: MentionsConfig) => MentionsEntity[]
   install: (app: App) => void
+  _InternalPanelDoNotUseOrYouWillBeFired: any
 }
 
 Mentions.Option = Option
@@ -424,5 +426,10 @@ Mentions.getMentions = (value = '', config: MentionsConfig = {}): MentionsEntity
     })
     .filter((entity): entity is MentionsEntity => !!entity && !!entity.value)
 }
+
+// We don't care debug panel
+/* istanbul ignore next */
+const PurePanel = genPurePanel(Mentions, undefined, undefined, 'mentions')
+;(Mentions as any)._InternalPanelDoNotUseOrYouWillBeFired = PurePanel
 
 export default Mentions

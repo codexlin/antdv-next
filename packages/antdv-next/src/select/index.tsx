@@ -18,6 +18,7 @@ import {
   useToProps,
   useZIndex,
 } from '../_util/hooks'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { getMergedStatus, getStatusClassNames } from '../_util/statusUtils'
 import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools'
 import { devUseWarning, isDev } from '../_util/warning'
@@ -568,6 +569,11 @@ const Select = defineComponent<
 ;(Select as any).Option = Option
 ;(Select as any).OptGroup = OptGroup
 export default Select
+
+// We don't care debug panel
+/* istanbul ignore next */
+const PurePanel = genPurePanel(Select, 'popupAlign')
+;(Select as any)._InternalPanelDoNotUseOrYouWillBeFired = PurePanel
 
 export const SelectOption = Option
 export const SelectOptGroup = OptGroup

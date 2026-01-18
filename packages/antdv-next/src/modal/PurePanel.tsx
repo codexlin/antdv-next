@@ -6,6 +6,7 @@ import { clsx } from '@v-c/util'
 import { computed, defineComponent } from 'vue'
 import { getAttrStyleAndClass } from '../_util/hooks'
 import { withPureRenderTheme } from '../_util/PurePanel'
+import { getSlotPropsFnRun } from '../_util/tools.ts'
 import { useComponentBaseConfig } from '../config-provider/context'
 import useCSSVarCls from '../config-provider/hooks/useCSSVarCls'
 import { ConfirmContent } from './ConfirmDialog'
@@ -43,7 +44,9 @@ const PurePanel = defineComponent<
 
     return () => {
       const { className: attrClassName, restAttrs } = getAttrStyleAndClass(attrs)
-      const { type, footer, closable, title, closeIcon, style: attrStyle } = props
+      const { type, closable, closeIcon, style: attrStyle } = props
+      const footer = getSlotPropsFnRun(slots, props, 'footer', false)
+      const title = getSlotPropsFnRun(slots, props, 'title', false)
       // Choose target props by confirm mark
       let additionalProps: Partial<DialogProps> = {}
       if (type) {
@@ -65,8 +68,8 @@ const PurePanel = defineComponent<
       else {
         additionalProps = {
           closable: closable ?? true,
-          title: slots.title?.() || title,
-          footer: footer !== null && <Footer {...props} footer={slots.footer || footer} />,
+          title,
+          footer: footer !== null && <Footer {...props} footer={footer} />,
           children: slots.default?.(),
         }
       }

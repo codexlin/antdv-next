@@ -20,6 +20,7 @@ import {
   useToProps,
   useZIndex,
 } from '../_util/hooks'
+import genPurePanel from '../_util/PurePanel.tsx'
 import { getMergedStatus, getStatusClassNames } from '../_util/statusUtils'
 import { getSlotPropsFnRun, toPropsRefs } from '../_util/tools'
 import { devUseWarning, isDev } from '../_util/warning'
@@ -568,6 +569,7 @@ const TreeSelect = InternalTreeSelect as typeof InternalTreeSelect & {
   SHOW_ALL: typeof SHOW_ALL
   SHOW_PARENT: typeof SHOW_PARENT
   SHOW_CHILD: typeof SHOW_CHILD
+  _InternalPanelDoNotUseOrYouWillBeFired: any
 }
 
 export const TreeSelectNode = TreeNode
@@ -581,5 +583,11 @@ TreeSelect.install = (app: App) => {
   app.component('ATreeSelectOption', TreeSelectNode)
   return app
 }
+
+// We don't care debug panel
+/* istanbul ignore next */
+const PurePanel = genPurePanel(TreeSelect, 'popupAlign', (props: any) => omit(props, ['visible']))
+
+TreeSelect._InternalPanelDoNotUseOrYouWillBeFired = PurePanel
 
 export default TreeSelect

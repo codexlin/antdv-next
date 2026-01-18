@@ -7,7 +7,10 @@ Debug usage. Do not use in your production.
 </docs>
 
 <script setup lang="ts">
+import { AutoComplete } from 'antdv-next'
 import { ref } from 'vue'
+
+const InternalAutoComplete = AutoComplete._InternalPanelDoNotUseOrYouWillBeFired
 
 const open = ref(false)
 
@@ -22,7 +25,7 @@ const options = [
 <template>
   <a-flex vertical align="start" gap="small">
     <a-switch v-model:checked="open" />
-    <a-auto-complete
+    <InternalAutoComplete
       default-value="lucy"
       style="width: 120px"
       :open="open"

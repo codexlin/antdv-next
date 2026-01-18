@@ -36,12 +36,25 @@ function genPurePanel(
       const popupHeight = shallowRef(0)
       const popupWidth = shallowRef(0)
       const open = shallowRef(props?.open ?? false)
+      const setOpen = (value: boolean) => {
+        if (props.open !== undefined) {
+          return
+        }
+        open.value = value
+      }
+
+      watch(
+        () => props.open,
+        () => {
+          open.value = props.open ?? false
+        },
+      )
       const { prefixCls } = useBaseConfig(defaultPrefixCls ?? 'select', props)
       watch(
         prefixCls,
         (_, _o, onCleanup) => {
         // We do not care about ssr
-          open.value = true
+          setOpen(true)
           if (typeof ResizeObserver !== 'undefined') {
             const resizeObserver = new ResizeObserver((entries) => {
               const element = entries![0]!.target as HTMLDivElement
@@ -66,6 +79,7 @@ function genPurePanel(
         },
         {
           immediate: true,
+          flush: 'post',
         },
       )
       return () => {
