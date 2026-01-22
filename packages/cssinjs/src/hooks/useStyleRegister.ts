@@ -6,11 +6,11 @@ import type { HashPriority } from '../StyleContext'
 import type Theme from '../theme/Theme'
 import type { Transformer } from '../transformers/interface.ts'
 import type { ExtractStyle } from './useGlobalCache'
-import hash from '@emotion/hash'
 // @ts-expect-error this is a valid package
 import unitless from '@emotion/unitless'
 
 import { removeCSS, updateCSS } from '@v-c/util/dist/Dom/dynamicCSS'
+
 import { compile, middleware, prefixer, serialize, stringify } from 'stylis'
 import { computed } from 'vue'
 import { contentQuotesLinter, hashedAnimationLinter } from '../linters'
@@ -26,6 +26,7 @@ import {
   existPath,
   getStyleAndHash,
 } from '../util/cacheMapUtil'
+import hash from '../util/resolveHash'
 import { useGlobalCache } from './useGlobalCache'
 
 // @ts-expect-error // FIXME:

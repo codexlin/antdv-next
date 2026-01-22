@@ -1,6 +1,7 @@
 import type { App, CSSProperties } from 'vue'
 import type { WatermarkContextProps } from './context.ts'
 import { useMutateObserver } from '@v-c/mutate-observer'
+import canUseDom from '@v-c/util/dist/Dom/canUseDom'
 import { omit } from 'es-toolkit'
 import { computed, defineComponent, ref, shallowRef, watch } from 'vue'
 import toList from '../_util/toList.ts'
@@ -153,6 +154,9 @@ const Watermark = defineComponent<WatermarkProps>(
 
     // Generate new Watermark content
     const renderWatermark = () => {
+      if (!canUseDom()) {
+        return
+      }
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
       if (ctx) {

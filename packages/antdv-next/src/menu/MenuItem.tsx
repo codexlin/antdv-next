@@ -60,12 +60,12 @@ const MenuItem = defineComponent<
           <span
             class={clsx(
               `${prefixCls}-title-content`,
-              firstLevel ? classes.itemContent : classes.subMenu.itemContent,
+              firstLevel ? classes?.itemContent : classes?.subMenu?.itemContent,
               {
                 [`${prefixCls}-title-content-with-extra`]: !!extra || extra === 0,
               },
             )}
-            style={firstLevel ? styles.itemContent : styles?.subMenu?.itemContent}
+            style={firstLevel ? styles?.itemContent : styles?.subMenu?.itemContent}
           >
             {children}
           </span>
@@ -103,21 +103,21 @@ const MenuItem = defineComponent<
           {...pureAttrs(attrs) as any}
           {...omit(props, ['title', 'icon', 'danger'])}
           class={clsx(
-            firstLevel ? classes.item : classes?.subMenu?.item,
+            firstLevel ? classes?.item : classes?.subMenu?.item,
             {
               [`${prefixCls}-item-danger`]: !!danger,
               [`${prefixCls}-item-only-child`]: (icon ? childrenLength + 1 : childrenLength) === 1,
             },
             (attrs as any).class,
           )}
-          style={[(attrs as any).style, firstLevel ? styles.item : styles?.subMenu?.item] as any}
+          style={[(attrs as any).style, firstLevel ? styles?.item : styles?.subMenu?.item] as any}
           title={typeof title === 'string' ? title : undefined}
         >
           {
             icon
               ? createVNode(icon, {
                   class: clsx(`${prefixCls}-item-icon`, firstLevel ? classes?.itemIcon : classes?.subMenu?.itemIcon),
-                  style: firstLevel ? styles.itemIcon : styles?.subMenu?.itemIcon,
+                  style: firstLevel ? styles?.itemIcon : styles?.subMenu?.itemIcon,
                 })
               : null
           }

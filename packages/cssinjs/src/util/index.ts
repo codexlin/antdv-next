@@ -1,9 +1,9 @@
 import type { HashPriority } from '../StyleContext'
-import hash from '@emotion/hash'
 import canUseDom from '@v-c/util/dist/Dom/canUseDom'
 import { removeCSS, updateCSS } from '@v-c/util/dist/Dom/dynamicCSS'
 import { ATTR_MARK, ATTR_TOKEN } from '../StyleContext'
 import { Theme } from '../theme'
+import hash from '../util/resolveHash'
 
 export { token2CSSVar } from './css-variables'
 

@@ -2,6 +2,7 @@ import type { CSSProperties, InjectionKey, Ref, SlotsType } from 'vue'
 
 import { BarsOutlined, LeftOutlined, RightOutlined } from '@antdv-next/icons'
 import { classNames } from '@v-c/util'
+import canUseDom from '@v-c/util/dist/Dom/canUseDom'
 import { omit } from 'es-toolkit'
 import { computed, defineComponent, inject, onBeforeUnmount, provide, ref, shallowRef, watch, watchEffect } from 'vue'
 import { addMediaQueryListener, removeMediaQueryListener } from '../_util/mediaQueryUtil.ts'
@@ -125,6 +126,9 @@ const Sider = defineComponent<
   watch(
     () => props.breakpoint,
     (_n, _ol, onCleanup) => {
+      if (!canUseDom()) {
+        return
+      }
       let mql: MediaQueryList
       const breakpoint = props.breakpoint
       if (typeof window?.matchMedia !== 'undefined' && breakpoint && breakpoint in dimensionMaxMap) {

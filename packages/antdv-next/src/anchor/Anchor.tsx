@@ -6,12 +6,12 @@ import type { AffixProps } from '../affix'
 import type { ComponentBaseProps } from '../config-provider/context'
 import type { AnchorLinkBaseProps } from './AnchorLink'
 import { classNames } from '@v-c/util'
+import canUseDom from '@v-c/util/dist/Dom/canUseDom'
 import { filterEmpty } from '@v-c/util/dist/props-util'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { computed, defineComponent, nextTick, ref, shallowRef, watch, watchEffect } from 'vue'
 import getScroll from '../_util/getScroll'
 import {
-
   useMergeSemantic,
   useToArr,
   useToProps,
@@ -283,6 +283,9 @@ const Anchor = defineComponent<
     watch(
       dependencyListItem,
       async (_n, _o, onCleanup) => {
+        if (!canUseDom()) {
+          return
+        }
         await nextTick()
         const scrollContainer = getCurrentContainer()
         handleScroll()

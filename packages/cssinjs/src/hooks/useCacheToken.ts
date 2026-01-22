@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
 import type Theme from '../theme/Theme'
 import type { ExtractStyle } from './useGlobalCache'
-import hash from '@emotion/hash'
 import canUseDom from '@v-c/util/dist/Dom/canUseDom'
 import { updateCSS } from '@v-c/util/dist/Dom/dynamicCSS'
 import { computed } from 'vue'
@@ -9,6 +8,7 @@ import { collectStyleText } from '../ssr/styleCollector'
 import { ATTR_MARK, ATTR_TOKEN, CSS_IN_JS_INSTANCE, useStyleContext } from '../StyleContext'
 import { flattenToken, memoResult, token2key, toStyleStr } from '../util'
 import { transformToken } from '../util/css-variables'
+import hash from '../util/resolveHash'
 import { useGlobalCache } from './useGlobalCache'
 
 const EMPTY_OVERRIDE = {}
