@@ -15,6 +15,7 @@ export const defaultComponents: DefaultComponentDefinition[] = [
     componentName: 'StyleProvider',
     tagName: 'a-style-provider',
     description: 'Provide CSS-in-JS context for styling configuration.',
+    lang: 'both',
     attributes: [
       { name: 'autoClear', description: 'Clear style cache on unmount.', type: 'boolean' },
       {

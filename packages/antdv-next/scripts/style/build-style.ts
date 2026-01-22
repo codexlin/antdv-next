@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createCache, extractStyle, StyleProvider } from '@antdv-next/cssinjs'
 import { createSSRApp, Fragment, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { createCache, extractStyle, StyleProvider } from '../../../cssinjs/src'
 // eslint-disable-next-line antfu/no-import-dist
 import * as _antd from '../../dist/components'
 
@@ -135,18 +135,19 @@ function defaultNode() {
   return h(Fragment, null, nodes)
 }
 
-function extractStyleText(customTheme?: (node: ReturnType<typeof h>) => ReturnType<typeof h>) {
+async function extractStyleText(customTheme?: (node: ReturnType<typeof h>) => ReturnType<typeof h>) {
   const cache = createCache()
   const ConfigProvider = (antd as any).ConfigProvider || Fragment
   const app = createSSRApp({
     render: () => h(ConfigProvider, { theme: { hashed: false } }, {
-      default: () => h(StyleProvider, { cache }, {
+      default: () => h(StyleProvider, { cache, mock: 'server' }, {
         default: () => customTheme ? customTheme(defaultNode()) : defaultNode(),
       }),
     }),
   })
 
-  return renderToString(app).then(() => extractStyle(cache, { plain: true, types: 'style' }))
+  await renderToString(app)
+  return extractStyle(cache, { plain: true, types: 'style' })
 }
 
 async function buildStyle() {
@@ -154,7 +155,7 @@ async function buildStyle() {
   await fs.rm(output, { force: true })
   const styleText = await extractStyleText()
   await fs.writeFile(output, styleText)
-  console.log(`Style output saved to: ${output}`)
+  console.log(`Style output saved to dist/antd.css`)
 }
 
 async function main() {

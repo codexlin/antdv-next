@@ -23,6 +23,7 @@
     "@types/jsdom": "catalog:",
     "@types/markdown-it": "catalog:",
     "@types/node": "catalog:",
+    "@v-c/portal": "catalog:",
     "@v-c/resize-observer": "catalog:",
     "@v-c/trigger": "catalog:",
     "@v-c/util": "catalog:",
@@ -52,6 +53,7 @@
   },
   "pnpm": {
     "overrides": {
+      "@v-c/portal": "catalog:",
       "@v-c/resize-observer": "catalog:",
       "@v-c/trigger": "catalog:",
       "@v-c/util": "catalog:",

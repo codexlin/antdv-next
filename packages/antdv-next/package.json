@@ -84,7 +84,8 @@
   },
   "scripts": {
     "test": "vitest run",
-    "build": "run-s build:esm build:umd build:web-types",
+    "build": "run-s build:esm build:umd build:p",
+    "build:p": "run-p build:web-types build:style",
     "build:esm": "tsdown",
     "build:umd": "vite build",
     "build:web-types": "esno ./scripts/web-types/index.ts",
