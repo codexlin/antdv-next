@@ -3,9 +3,13 @@
   "ui": "tui",
   "tasks": {
     "build:token": {
-      "dependsOn": ["@antdv-next/cssinjs#build"],
+      "dependsOn": ["@antdv-next/cssinjs#build", "build:esm"],
       "cache": false,
       "outputs": []
+    },
+    "build:esm": {
+      "dependsOn": ["^build:esm"],
+      "outputs": ["dist/**"]
     },
     "@antdv-next/cssinjs#build": {
       "dependsOn": ["^build"],
