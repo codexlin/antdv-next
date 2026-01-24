@@ -1,5 +1,6 @@
-// 文档分了中文文档和英文文档的加载
 import type { RouteRecordRaw } from 'vue-router'
+import type { AntdvMenuItem } from '@/config/menu/interface'
+import { docsMenus } from '@/config/menu/docs'
 
 const cnDocs = import.meta.glob('/src/pages/components/*/index.zh-CN.md')
 const enDocs = import.meta.glob('/src/pages/components/*/index.en-US.md')
@@ -53,28 +54,110 @@ function generateCustomDocRoutes() {
   return routes
 }
 
+function flattenMenuKeys(items: AntdvMenuItem[]) {
+  const result: string[] = []
+  items.forEach((item) => {
+    if (!item)
+      return
+    if (item.type === 'group' && item.children) {
+      result.push(...flattenMenuKeys(item.children))
+      return
+    }
+    if (typeof item.key === 'string' && item.key.startsWith('/'))
+      result.push(item.key)
+  })
+  return result
+}
+
+function buildRouteMap(routes: RouteRecordRaw[]) {
+  return routes.reduce<Record<string, RouteRecordRaw>>((acc, route) => {
+    if (route.path)
+      acc[route.path] = route
+    return acc
+  }, {})
+}
+
+function getRouteGroupChildren(
+  prefix: string,
+  menuKeys: string[],
+  routeMap: Record<string, RouteRecordRaw>,
+) {
+  const ordered: RouteRecordRaw[] = []
+  const used = new Set<string>()
+
+  menuKeys.forEach((menuKey) => {
+    const route = routeMap[menuKey]
+    if (route && !used.has(menuKey)) {
+      ordered.push(route)
+      used.add(menuKey)
+    }
+    const cnKey = `${menuKey}-cn`
+    const cnRoute = routeMap[cnKey]
+    if (cnRoute && !used.has(cnKey)) {
+      ordered.push(cnRoute)
+      used.add(cnKey)
+    }
+  })
+
+  const extras = Object.keys(routeMap)
+    .filter(path => path.startsWith(prefix) && !used.has(path))
+    .sort((a, b) => a.localeCompare(b))
+    .map(path => routeMap[path])
+
+  return [...ordered, ...extras]
+}
+
+function getDocsRootRedirect(
+  menuPrefixes: string[],
+  menuKeyMap: Record<string, string[]>,
+  routeMap: Record<string, RouteRecordRaw>,
+) {
+  for (const prefix of menuPrefixes) {
+    const keys = menuKeyMap[prefix] || []
+    for (const key of keys) {
+      if (routeMap[key])
+        return key
+      if (routeMap[`${key}-cn`])
+        return `${key}-cn`
+    }
+  }
+  const fallback = Object.keys(routeMap).sort()[0]
+  return fallback ?? '/docs/vue/introduce'
+}
+
+function generateGroupedDocRoutes() {
+  const allRoutes = [
+    ...generateCustomDocRoutes(),
+    ...generateDocRoutes(),
+  ]
+  const routeMap = buildRouteMap(allRoutes)
+  const menuPrefixes = Object.keys(docsMenus)
+  const menuKeyMap = menuPrefixes.reduce<Record<string, string[]>>((acc, prefix) => {
+    acc[prefix] = flattenMenuKeys(docsMenus[prefix] || [])
+    return acc
+  }, {})
+
+  return {
+    groups: menuPrefixes.map((prefix) => {
+      const children = getRouteGroupChildren(prefix, menuKeyMap[prefix]!, routeMap)
+      const redirect = children[0]?.path || prefix
+      return {
+        path: prefix,
+        redirect,
+        children,
+      }
+    }),
+    rootRedirect: getDocsRootRedirect(menuPrefixes, menuKeyMap, routeMap),
+  }
+}
+
+const docGroups = generateGroupedDocRoutes()
+
 export default [
   {
     path: '/docs',
-    redirect: '/docs/vue/introduce',
+    redirect: docGroups.rootRedirect,
     component: () => import('@/layouts/docs/index.vue'),
-    children: [
-      {
-        path: '/components',
-        redirect: '/components/overview',
-        children: [
-          ...generateCustomDocRoutes(),
-          ...generateDocRoutes(),
-        ],
-      },
-      {
-        path: '/docs/vue',
-        redirect: '/docs/vue/introduce',
-        children: [
-
-        ],
-      },
-    ],
+    children: docGroups.groups,
   },
-
 ] as RouteRecordRaw[]
