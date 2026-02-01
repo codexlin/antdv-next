@@ -99,7 +99,9 @@ const cls = computed(() => {
 <template>
   <section :id="id" class="ant-doc-demo-box border border-solid border-color-split" :class="cls">
     <template v-if="simplify">
-      <component :is="component" v-if="demo?.component" />
+      <section class="vp-raw ant-doc-demo-box-demo">
+        <component :is="component" v-if="demo?.component" />
+      </section>
     </template>
     <template v-else>
       <section v-if="!iframe" class="vp-raw ant-doc-demo-box-demo" :style="demoStyle">
