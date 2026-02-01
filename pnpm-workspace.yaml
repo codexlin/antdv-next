@@ -58,6 +58,7 @@ catalogs:
     '@antdv-next/unocss': ^1.0.0-rc.1
     '@mdit-vue/plugin-frontmatter': 3.0.2
     '@mdit-vue/plugin-headers': ^3.0.2
+    prismjs: ^1.30.0
     '@mdit-vue/plugin-title': ^3.0.2
     '@mdit-vue/plugin-toc': ^3.0.2
     '@mdit-vue/shared': ^3.0.2
