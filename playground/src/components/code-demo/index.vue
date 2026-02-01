@@ -180,10 +180,12 @@ const cls = computed(() => {
     border-radius: 0;
     margin-bottom: 0;
     border: none;
+    background: transparent;
 
     .ant-doc-demo-box-demo {
       padding: 0;
       border-bottom: 0;
+      background: transparent;
     }
   }
 

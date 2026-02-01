@@ -137,7 +137,7 @@ function togglePin(semanticName: string) {
 
 <template>
   <div ref="containerRef" class="semantic-preview-container">
-    <a-row :style="{ minHeight: height ? `${height}px` : undefined }">
+    <a-row class="semantic-preview-row" :style="{ minHeight: height ? `${height}px` : undefined }">
       <a-col
         :span="16"
         class="semantic-preview-col"
@@ -212,6 +212,8 @@ function togglePin(semanticName: string) {
 .semantic-preview-container {
   position: relative;
   z-index: 0;
+  border: 1px solid var(--ant-color-border-secondary);
+  border-radius: var(--ant-border-radius-lg);
 }
 
 .semantic-preview-col {
