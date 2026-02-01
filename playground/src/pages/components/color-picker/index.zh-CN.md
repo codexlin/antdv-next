@@ -126,6 +126,10 @@ interface PresetsItem {
 | root | 触发器容器，包含边框样式、过渡动画、尺寸控制等样式，显示颜色块和文本内容 |
 | popup.root | 弹出面板根容器，包含背景色、阴影效果、色彩选择面板、滑块控制和预设颜色等样式 |
 
+## 语义化 DOM {#semantic-dom}
+
+<demo src="./demo/_semantic.vue" simplify></demo>
+
 ## 主题变量（Design Token）{#design-token}
 
 <ComponentTokenTable component="ColorPicker"></ComponentTokenTable>
