@@ -33,7 +33,7 @@ const semantics = computed(() => [
 
 const divRef = ref<HTMLDivElement | null>(null)
 
-const items = [
+const items: any[] = [
   {
     key: '1',
     type: 'group',
@@ -72,7 +72,7 @@ const items = [
       <div ref="divRef" :style="{ height: '120px', position: 'absolute', top: '50px' }">
         <a-dropdown
           open
-          :menu="{ items, defaultOpenKeys: ['SubMenu'] }"
+          :menu="{ items }"
           :styles="{ root: { width: '200px', zIndex: 1 } }"
           :get-popup-container="() => divRef!"
           :classes="classes"
