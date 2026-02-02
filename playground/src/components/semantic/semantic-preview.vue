@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { InfoCircleOutlined, PushpinOutlined } from '@antdv-next/icons'
+import vueLang from '@shikijs/langs/vue-html'
+import darkTheme from '@shikijs/themes/vitesse-dark'
+import lightTheme from '@shikijs/themes/vitesse-light'
 import { set } from '@v-c/util'
 import { theme } from 'antdv-next'
 import useLocale from 'antdv-next/locale/useLocale'
-import Prism from 'prismjs'
+import { createHighlighterCoreSync } from 'shiki/core'
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import { computed, ref } from 'vue'
 import Markers from './markers.vue'
 
@@ -21,6 +25,12 @@ const props = withDefaults(defineProps<{
   componentName: 'Component',
   semantics: () => [],
   padding: true,
+})
+
+const shiki = createHighlighterCoreSync({
+  themes: [darkTheme, lightTheme],
+  langs: [vueLang],
+  engine: createJavaScriptRegexEngine(),
 })
 
 export interface SemanticItem {
@@ -91,6 +101,14 @@ const hoveredSemanticClasses = computed(() => {
   return clone
 })
 
+// 组件转成<a-开头，小写驼峰
+const componentNameParser = computed(() => {
+  if (!props.componentName) {
+    return ''
+  }
+  return `a-${props.componentName.replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '')}`
+})
+
 // Generate highlight code example
 function generateHighlightCode(semanticName: string): string {
   const classes = set({}, getSemanticCells(semanticName), 'my-classname')
@@ -111,7 +129,7 @@ function generateHighlightCode(semanticName: string): string {
 
   if (props.itemsAPI) {
     code = `
-<${props.componentName}
+<${componentNameParser.value}
   :${props.itemsAPI}="[{
     classes: ${format(classes, 2)},
     styles: ${format(styles, 2)},
@@ -120,13 +138,22 @@ function generateHighlightCode(semanticName: string): string {
   }
   else {
     code = `
-<${props.componentName}
+<${componentNameParser.value}
   :classes="${format(classes)}"
   :styles="${format(styles)}"
 />`.trim()
   }
 
-  return Prism.highlight(code, Prism.languages.javascript, 'jsx')
+  return shiki.codeToHtml(
+    code,
+    {
+      lang: 'vue-html',
+      themes: {
+        light: 'vitesse-light',
+        dark: 'vitesse-dark',
+      },
+    },
+  )
 }
 
 // Toggle pin
