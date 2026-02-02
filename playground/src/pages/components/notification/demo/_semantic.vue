@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { notification } from 'antdv-next'
 import { computed } from 'vue'
 import { SemanticPreview } from '@/components/semantic'
 import { useSemanticLocale } from '@/composables/use-locale'
@@ -19,6 +20,7 @@ const locales = {
     actions: 'Actions element, set float right, top margin and action button layout styles',
   },
 }
+const { _InternalPanelDoNotUseOrYouWillBeFired: InternalPanel } = notification
 
 const locale = useSemanticLocale(locales)
 
@@ -37,7 +39,7 @@ const semantics = computed(() => [
     :semantics="semantics"
   >
     <template #default="{ classes }">
-      <a-notification-internal-panel
+      <InternalPanel
         title="Hello World!"
         description="Hello World?"
         type="success"
@@ -48,7 +50,7 @@ const semantics = computed(() => [
             My Button
           </a-button>
         </template>
-      </a-notification-internal-panel>
+      </InternalPanel>
     </template>
   </SemanticPreview>
 </template>

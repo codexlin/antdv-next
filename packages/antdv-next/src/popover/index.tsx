@@ -194,7 +194,7 @@ const InternalPopover = defineComponent<
           dataPopoverInject={true}
           ref={popoverRef}
         >
-          {createVNode(children, { onKeydown: onKeyDown })}
+          { children ? createVNode(children, { onKeydown: onKeyDown }) : null}
         </Tooltip>
       )
     }

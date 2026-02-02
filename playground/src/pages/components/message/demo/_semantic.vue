@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { message } from 'antdv-next'
 import { computed } from 'vue'
 import { SemanticPreview } from '@/components/semantic'
 import { useSemanticLocale } from '@/composables/use-locale'
+
+const { _InternalPanelDoNotUseOrYouWillBeFired: InternalPanel } = message
 
 const locales = {
   cn: {
@@ -31,7 +34,7 @@ const semantics = computed(() => [
     :semantics="semantics"
   >
     <template #default="{ classes }">
-      <a-message-internal-panel
+      <InternalPanel
         type="success"
         content="Hello, Ant Design!"
         :classes="classes"

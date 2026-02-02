@@ -55,7 +55,6 @@ const steps = [
   {
     title: 'Hello World!',
     description: 'Hello World?!',
-    cover: 'https://user-images.githubusercontent.com/5378891/197385811-55df8480-7ff4-44bd-9d43-a7dade598d70.png',
     target: () => createBtnRef.value!,
     mask: true,
   },
@@ -94,7 +93,13 @@ const steps = [
           :get-popup-container="false"
           :steps="steps"
           :classes="classes"
-        />
+        >
+          <template #coverRender="{ index }">
+            <template v-if="index === 0">
+              <img src="https://user-images.githubusercontent.com/5378891/197385811-55df8480-7ff4-44bd-9d43-a7dade598d70.png" alt="img">
+            </template>
+          </template>
+        </a-tour>
       </div>
     </template>
   </SemanticPreview>
