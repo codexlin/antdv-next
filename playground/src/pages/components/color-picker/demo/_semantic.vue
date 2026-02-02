@@ -22,6 +22,7 @@ const semantics = computed(() => [
 ])
 
 const divRef = ref<HTMLDivElement | null>(null)
+const body = document?.body
 </script>
 
 <template>
@@ -34,7 +35,7 @@ const divRef = ref<HTMLDivElement | null>(null)
         <a-color-picker
           default-value="#1677ff"
           open
-          :get-popup-container="() => divRef || document.body"
+          :get-popup-container="() => divRef || body"
           :styles="{ popup: { root: { zIndex: 1 } } }"
           :classes="classes"
         />

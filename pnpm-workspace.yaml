@@ -48,7 +48,7 @@ catalogs:
     typedoc: ^0.28.16
     typescript: ~5.9.3
     unocss: ^66.5.10
-    vite: ^8.0.0-beta.8
+    vite: ^8.0.0-beta.11
     vite-plugin-dayjs: ^1.0.1
     vite-plugin-inspect: ^11.3.3
     vite-plugin-tsx-resolve-types: ^1.0.1-beta.5
@@ -133,8 +133,8 @@ catalogs:
     '@v-c/mutate-observer': ^1.0.1
     '@v-c/notification': ^1.0.0
     '@v-c/pagination': ^1.0.0
-    '@v-c/picker': ^1.0.0
-    '@v-c/portal': ^1.0.6
+    '@v-c/picker': ^1.0.1
+    '@v-c/portal': ^1.0.7
     '@v-c/progress': ^1.0.0
     '@v-c/qrcode': ^1.0.0
     '@v-c/rate': ^1.0.0
@@ -152,7 +152,7 @@ catalogs:
     '@v-c/tour': ^1.0.3
     '@v-c/tree': ^1.0.1
     '@v-c/tree-select': ^1.0.0
-    '@v-c/trigger': ^1.0.8
+    '@v-c/trigger': ^1.0.9
     '@v-c/upload': ^1.0.0
     '@v-c/util': ^1.0.11
     '@v-c/virtual-list': ^1.0.5

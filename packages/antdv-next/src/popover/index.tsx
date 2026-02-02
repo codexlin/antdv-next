@@ -105,7 +105,6 @@ const InternalPopover = defineComponent<
       PopoverStylesType,
       PopoverProps
     >(useToArr(contextClassNames, classes), useToArr(contextStyles, styles), useToProps(mergedProps))
-
     const open = shallowRef(props?.open ?? props?.defaultOpen ?? false)
     watchEffect(() => {
       if (props.open !== undefined) {
