@@ -31,7 +31,7 @@ const locales = {
 
 const [, lang] = useLocale('Table')
 const locale = computed(() => {
-  return lang?.value.toLowerCase() === 'zh-cn' ? locales.cn : locales.en
+  return lang?.value?.toLowerCase?.() === 'zh-cn' ? locales.cn : locales.en
 })
 
 const { token: tokenState } = theme.useToken()
@@ -83,7 +83,7 @@ const data = computed<TokenData[]>(() => {
     .filter(([, meta]) => meta.source === props.type)
     .map(([token, meta]) => ({
       name: token,
-      desc: lang?.value.toLowerCase() === 'zh-cn' ? meta.desc : meta.descEn,
+      desc: lang?.value?.toLowerCase?.() === 'zh-cn' ? meta.desc : meta.descEn,
       type: meta.type,
       value: (defaultToken as Record<string, any>)[token],
     }))

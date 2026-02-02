@@ -51,7 +51,7 @@ const locales = {
 
 const [, lang] = useLocale('Table')
 const locale = computed(() => {
-  return lang?.value.toLowerCase() === 'zh-cn' ? locales.cn : locales.en
+  return lang?.value?.toLowerCase?.() === 'zh-cn' ? locales.cn : locales.en
 })
 
 const { token: tokenState } = theme.useToken()

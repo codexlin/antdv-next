@@ -37,7 +37,7 @@ const locales = {
 
 const [, lang] = useLocale('Table')
 const locale = computed(() => {
-  return lang?.value.toLowerCase() === 'zh-cn' ? locales.cn : locales.en
+  return lang?.value?.toLowerCase?.() === 'zh-cn' ? locales.cn : locales.en
 })
 
 const mode = ref<'horizontal' | 'vertical' | 'inline'>('horizontal')
