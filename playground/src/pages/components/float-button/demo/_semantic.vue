@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { QuestionCircleOutlined } from '@antdv-next/icons'
 import { FloatButton } from 'antdv-next'
-import useLocale from 'antdv-next/locale/useLocale'
 import { computed } from 'vue'
-import { SemanticPreview } from '../../../../components/semantic'
+import { SemanticPreview } from '@/components/semantic'
+import { useSemanticLocale } from '@/composables/use-locale'
 
 const PurePanel = (FloatButton as any)._InternalPanelDoNotUseOrYouWillBeFired
 
@@ -20,10 +20,7 @@ const locales = {
   },
 }
 
-const [, lang] = useLocale('Table')
-const locale = computed(() => {
-  return lang?.value?.toLowerCase?.() === 'zh-cn' ? locales.cn : locales.en
-})
+const locale = useSemanticLocale(locales)
 
 const semantics = computed(() => [
   { name: 'root', desc: locale.value.root },

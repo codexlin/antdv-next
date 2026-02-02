@@ -5,10 +5,10 @@ import darkTheme from '@shikijs/themes/vitesse-dark'
 import lightTheme from '@shikijs/themes/vitesse-light'
 import { set } from '@v-c/util'
 import { theme } from 'antdv-next'
-import useLocale from 'antdv-next/locale/useLocale'
 import { createHighlighterCoreSync } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import { computed, ref } from 'vue'
+import { useSemanticLocale } from '@/composables/use-locale'
 import Markers from './markers.vue'
 
 defineOptions({
@@ -48,10 +48,7 @@ const locales = {
   },
 }
 
-const [, lang] = useLocale('Table')
-const locale = computed(() => {
-  return lang?.value?.toLowerCase?.() === 'zh-cn' ? locales.cn : locales.en
-})
+const locale = useSemanticLocale(locales)
 
 const { token } = theme.useToken()
 

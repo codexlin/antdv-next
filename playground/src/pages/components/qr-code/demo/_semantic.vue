@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import useLocale from 'antdv-next/locale/useLocale'
 import { computed } from 'vue'
-import { SemanticPreview } from '../../../../components/semantic'
+import { SemanticPreview } from '@/components/semantic'
+import { useSemanticLocale } from '@/composables/use-locale'
 
 const locales = {
   cn: {
@@ -14,10 +14,7 @@ const locales = {
   },
 }
 
-const [, lang] = useLocale('Table')
-const locale = computed(() => {
-  return lang?.value?.toLowerCase?.() === 'zh-cn' ? locales.cn : locales.en
-})
+const locale = useSemanticLocale(locales)
 
 const semantics = computed(() => [
   { name: 'root', desc: locale.value.root },
